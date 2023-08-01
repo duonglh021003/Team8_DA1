@@ -4,6 +4,7 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,13 +33,24 @@ import lombok.ToString;
 public class MauSac {
 
     @Id
-    @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idMauSac;
+    @Column(name = "Id")
+    private Integer id;
 
     @Column(name = "Ma")
-    private String maMauSac;
+    private String ma;
 
     @Column(name = "Ten")
-    private String tenMauSac;
+    private String ten;
+    
+    @Column(name = "NgayTao")
+    private Date ngayTao;
+
+    @Column(name = "NgaySua")
+    private Date ngaySua;
+    
+    @Override
+    public String toString() {
+        return ten ;
+    }
 }

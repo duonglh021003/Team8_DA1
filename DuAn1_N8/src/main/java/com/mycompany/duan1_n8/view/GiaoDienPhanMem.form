@@ -50,7 +50,7 @@
               <Component id="btn_khuyenmai" alignment="0" max="32767" attributes="0"/>
               <Component id="btn_nhanvien" alignment="0" max="32767" attributes="0"/>
               <Component id="btn_khachhang" alignment="0" max="32767" attributes="0"/>
-              <Component id="btn_thongke" max="32767" attributes="0"/>
+              <Component id="btn_checkIn" max="32767" attributes="0"/>
               <Component id="btn_dangxuat" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
@@ -77,7 +77,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_khachhang" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btn_thongke" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_checkIn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_dangxuat" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
@@ -358,14 +358,14 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="btn_thongke">
+        <Container class="javax.swing.JPanel" name="btn_checkIn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_thongkeMousePressed"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_checkInMousePressed"/>
           </Events>
 
           <Layout>
@@ -397,7 +397,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\bar-chart.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Th&#x1ed1;ng k&#xea;"/>
+                <Property name="text" type="java.lang.String" value="CheckIn"/>
               </Properties>
             </Component>
           </SubComponents>

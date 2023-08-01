@@ -26,7 +26,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
 //        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setColor(btn_banhang);
-        resetColor(new JPanel[]{btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormBanHang());
 
     }
@@ -71,7 +71,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         btn_khachhang = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        btn_thongke = new javax.swing.JPanel();
+        btn_checkIn = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         btn_dangxuat = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -256,29 +256,29 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btn_thongke.setBackground(new java.awt.Color(153, 255, 204));
-        btn_thongke.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_checkIn.setBackground(new java.awt.Color(153, 255, 204));
+        btn_checkIn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_thongkeMousePressed(evt);
+                btn_checkInMousePressed(evt);
             }
         });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\bar-chart.png")); // NOI18N
-        jLabel9.setText("Thống kê");
+        jLabel9.setText("CheckIn");
 
-        javax.swing.GroupLayout btn_thongkeLayout = new javax.swing.GroupLayout(btn_thongke);
-        btn_thongke.setLayout(btn_thongkeLayout);
-        btn_thongkeLayout.setHorizontalGroup(
-            btn_thongkeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btn_thongkeLayout.createSequentialGroup()
+        javax.swing.GroupLayout btn_checkInLayout = new javax.swing.GroupLayout(btn_checkIn);
+        btn_checkIn.setLayout(btn_checkInLayout);
+        btn_checkInLayout.setHorizontalGroup(
+            btn_checkInLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btn_checkInLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        btn_thongkeLayout.setVerticalGroup(
-            btn_thongkeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btn_thongkeLayout.createSequentialGroup()
+        btn_checkInLayout.setVerticalGroup(
+            btn_checkInLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btn_checkInLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -326,7 +326,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
             .addComponent(btn_khuyenmai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btn_nhanvien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btn_khachhang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btn_thongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_checkIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btn_dangxuat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
@@ -351,7 +351,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_khachhang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_thongke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_checkIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_dangxuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
@@ -383,7 +383,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         int i = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất không?", "Phần mềm bán hàng", JOptionPane.YES_NO_OPTION);
         if (i == 0) {
             setColor(btn_dangxuat);
-            resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke});
+            resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn});
             new GiaoDienDangNhap().setVisible(true);
             this.dispose();
         }
@@ -392,61 +392,61 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
     private void btn_banhangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_banhangMousePressed
         // TODO add your handling code here:
         setColor(btn_banhang);
-        resetColor(new JPanel[]{btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormBanHang());
     }//GEN-LAST:event_btn_banhangMousePressed
 
     private void btn_sanphamMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_sanphamMousePressed
         // TODO add your handling code here:
         setColor(btn_sanpham);
-        resetColor(new JPanel[]{btn_banhang, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormSanPham());
     }//GEN-LAST:event_btn_sanphamMousePressed
 
     private void btn_hoadonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hoadonMousePressed
         // TODO add your handling code here:
         setColor(btn_hoadon);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormHoaDon());
     }//GEN-LAST:event_btn_hoadonMousePressed
 
     private void btn_khuyenmaiMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_khuyenmaiMousePressed
         // TODO add your handling code here:
         setColor(btn_khuyenmai);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormKhuyenMai());
     }//GEN-LAST:event_btn_khuyenmaiMousePressed
 
     private void btn_nhanvienMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_nhanvienMousePressed
         // TODO add your handling code here:
         setColor(btn_nhanvien);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormNhanVien());
         setColor(btn_nhanvien);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_nhanvien, btn_khachhang, btn_checkIn, btn_dangxuat});
         setpanal(new FormNhanVien());
     }//GEN-LAST:event_btn_nhanvienMousePressed
 
     private void btn_khachhangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_khachhangMousePressed
         // TODO add your handling code here:
         setColor(btn_khachhang);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_thongke, btn_dangxuat});
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_checkIn, btn_dangxuat});
         setpanal(new FormKhachHang());
     }//GEN-LAST:event_btn_khachhangMousePressed
 
-    private void btn_thongkeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_thongkeMousePressed
+    private void btn_checkInMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_checkInMousePressed
         // TODO add your handling code here:
-//        setColor(btn_thongke);
-//        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
-//        setpanal(new FormThongKe());
-    }//GEN-LAST:event_btn_thongkeMousePressed
+        setColor(btn_checkIn);
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
+        setpanal(new FormCheckIn());
+    }//GEN-LAST:event_btn_checkInMousePressed
 
     private void btn_dangxuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dangxuatMousePressed
         // TODO add your handling code here:    
         int i = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất không?", "Phần mềm bán hàng", JOptionPane.YES_NO_OPTION);
         if (i == 0) {
             setColor(btn_dangxuat);
-            resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke});
+            resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_checkIn});
             new GiaoDienDangNhap().setVisible(true);
             this.dispose();
         }
@@ -495,13 +495,13 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btn_banhang;
+    private javax.swing.JPanel btn_checkIn;
     private javax.swing.JPanel btn_dangxuat;
     private javax.swing.JPanel btn_hoadon;
     private javax.swing.JPanel btn_khachhang;
     private javax.swing.JPanel btn_khuyenmai;
     private javax.swing.JPanel btn_nhanvien;
     private javax.swing.JPanel btn_sanpham;
-    private javax.swing.JPanel btn_thongke;
     private javax.swing.JPanel formPhanMem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

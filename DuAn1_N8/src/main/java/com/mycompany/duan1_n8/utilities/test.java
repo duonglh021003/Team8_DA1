@@ -32,6 +32,7 @@ public class test {
 //        int hour = now.getHour();
 //        System.out.println("aaaaaaaaa   "+hour);
 
+System.out.println(java.time.LocalTime.now());
 
     }
 }

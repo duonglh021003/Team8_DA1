@@ -85,14 +85,11 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
         cbbT6();
         cbbT7();
         cbbCN();
-        initWebcam();
-        captureThread();
         txt_ngayTao.disable();
         txt_ngayTao.setText(java.time.LocalDate.now().toString());
         txt_ngaySua.disable();
         txt_ngaySua.setText(java.time.LocalDate.now().toString());
-       
-        
+
     }
 
     void cbbT2() {
@@ -222,6 +219,13 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
         captureThread.start();
     }
 
+    public void stopCapture() {
+        isCameraClosed = true;
+        if (webcam != null && webcam.isOpen()) {
+            webcam.close();
+        }
+    }
+
     private DanhSachLamViec getData() {
         DanhSachLamViec p = new DanhSachLamViec();
 
@@ -253,7 +257,21 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
         p.setNhanVien(nhanVien);
 
         return p;
-            
+
+    }
+    
+        private void clear() {
+        txt_ma01.setText("");
+        txtMaQR1.setText("");
+        txt_ngaySua.setText(""); 
+        txt_ngayTao.setText("");
+        cbo_t2.setSelectedIndex(0);
+        cbo_t3.setSelectedIndex(0);
+        cbo_t4.setSelectedIndex(0);
+        cbo_t5.setSelectedIndex(0);
+        cbo_t6.setSelectedIndex(0);
+        cbo_t7.setSelectedIndex(0);
+        cbo_t8.setSelectedIndex(0);
     }
 
     /**
@@ -687,6 +705,7 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
 
     private void btn_qr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr1ActionPerformed
         // TODO add your handling code here:
+        clear();
     }//GEN-LAST:event_btn_qr1ActionPerformed
 
     private void txt_timsdt1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_timsdt1InputMethodTextChanged
@@ -707,6 +726,33 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
 
     private void tbl_LamViecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_LamViecMouseClicked
         // TODO add your handling code here:
+        Integer row = tbl_LamViec.getSelectedRow();
+        txt_ma01.setText(tbl_LamViec.getValueAt(row, 0).toString());
+        txt_ngayTao.setText(tbl_LamViec.getValueAt(row, 1).toString());
+        txt_ngaySua.setText(tbl_LamViec.getValueAt(row, 2).toString());
+        String t2 = tbl_LamViec.getValueAt(row, 3).toString();
+        cbo_t2.addItem(t2); 
+        cbo_t2.setSelectedItem(t2);
+        String t3 = tbl_LamViec.getValueAt(row, 4).toString();
+        cbo_t3.addItem(t3); 
+        cbo_t3.setSelectedItem(t3);
+        String t4 = tbl_LamViec.getValueAt(row, 5).toString();
+        cbo_t4.addItem(t4); 
+        cbo_t4.setSelectedItem(t4);
+        String t5 = tbl_LamViec.getValueAt(row, 6).toString();
+        cbo_t5.addItem(t5); 
+        cbo_t5.setSelectedItem(t5);
+        String t6 = tbl_LamViec.getValueAt(row, 7).toString();
+        cbo_t6.addItem(t6); 
+        cbo_t6.setSelectedItem(t6);
+        String t7 = tbl_LamViec.getValueAt(row, 8).toString();
+        cbo_t7.addItem(t7); 
+        cbo_t7.setSelectedItem(t7);
+        String t8 = tbl_LamViec.getValueAt(row, 9).toString();
+        cbo_t8.addItem(t8); 
+        cbo_t8.setSelectedItem(t8);
+        txtMaQR1.setText(tbl_LamViec.getValueAt(row, 10).toString());
+
     }//GEN-LAST:event_tbl_LamViecMouseClicked
 
     private void pan_dsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pan_dsMouseClicked
@@ -715,7 +761,7 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
 
     private void btn_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_stopActionPerformed
         // TODO add your handling code here:
-//        stopCapture();
+        stopCapture();
     }//GEN-LAST:event_btn_stopActionPerformed
 
     private void btn_qrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qrActionPerformed

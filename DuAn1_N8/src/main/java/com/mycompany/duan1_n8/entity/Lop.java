@@ -4,10 +4,46 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import java.sql.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  *
  * @author BuiDucMinh
  */
+
+@Table(name = "Lop")
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+
 public class Lop {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
+    private Integer id;
+
+    @Column(name = "SoLuong")
+    private Integer soLuong;
+    
+    @Column(name = "NgayTao")
+    private Date ngayTao;
+
+    @Column(name = "NgaySua")
+    private Date ngaySua;
     
 }

@@ -4,12 +4,20 @@
  */
 package com.mycompany.duan1_n8.utilities;
 
+import com.mycompany.duan1_n8.entity.CheckIn;
+import com.mycompany.duan1_n8.entity.CheckOut;
+import com.mycompany.duan1_n8.entity.ChiTietSP;
 import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
+import com.mycompany.duan1_n8.entity.DoiTuongSuDung;
+import com.mycompany.duan1_n8.entity.Lop;
 import com.mycompany.duan1_n8.entity.MauSac;
+import com.mycompany.duan1_n8.entity.NSX;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import com.mycompany.duan1_n8.entity.PhieuGiamGia;
+import com.mycompany.duan1_n8.entity.SanPham;
+import com.mycompany.duan1_n8.entity.ThietKe;
 import com.mycompany.duan1_n8.entity.Thu2;
 import com.mycompany.duan1_n8.entity.Thu3;
 import com.mycompany.duan1_n8.entity.Thu4;
@@ -52,9 +60,17 @@ public class HibernateUtil {
         conf.addAnnotatedClass(Thu7.class);
         conf.addAnnotatedClass(ChuNhat.class);
         conf.addAnnotatedClass(ChucVu.class);
+        conf.addAnnotatedClass(ThietKe.class);
+        conf.addAnnotatedClass(DoiTuongSuDung.class);
+        conf.addAnnotatedClass(NSX.class);
+        conf.addAnnotatedClass(MauSac.class);
+        conf.addAnnotatedClass(SanPham.class);
+        conf.addAnnotatedClass(Lop.class);
+        conf.addAnnotatedClass(ChiTietSP.class);
         conf.addAnnotatedClass(NhanVien.class);
         conf.addAnnotatedClass(DanhSachLamViec.class);
-        
+        conf.addAnnotatedClass(CheckIn.class);
+        conf.addAnnotatedClass(CheckOut.class);
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);

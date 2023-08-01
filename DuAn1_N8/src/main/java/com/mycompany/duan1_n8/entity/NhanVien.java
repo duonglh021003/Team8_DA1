@@ -5,8 +5,7 @@
 package com.mycompany.duan1_n8.entity;
 
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
