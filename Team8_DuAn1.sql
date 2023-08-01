@@ -105,7 +105,6 @@ NgaySanXuat Date DEFAULT NULL,
 HanSuDung Date DEFAULT NULL,
 Gia DECIMAL(20,0) DEFAULT NULL,
 MoTa NVARCHAR(50) DEFAULT NULL,
-TrongLuong DECIMAL(20,0) DEFAULT NULL,
 SoLuong int DEFAULT NULL,
 TrangThai INT DEFAULT 0 ,
 IdTK BIGINT , 
@@ -116,7 +115,7 @@ IdSP BIGINT ,
 IdLop BIGINT , 
 )
 insert into ChiTietSP values
-(83758902,'2002-12-12','2002-12-12',10,N'không',5,20,DEFAULT,1,1,1,1,1,1)
+(83758902,'2002-12-12','2002-12-12',10,N'không',20,DEFAULT,1,1,1,1,1,1)
 select *
 from
 ChiTietSP
@@ -302,11 +301,10 @@ GioVao VARCHAR(50) DEFAULT NULL,
 PhutVao VARCHAR(50) DEFAULT NULL,
 PhutCoDinh VARCHAR(50) DEFAULT 0,
 BaoCao NVARCHAR(50) DEFAULT NULL,
-TrangThai INT DEFAULT 0 ,
 MaQRNhanVien BIGINT
 )
 insert into CheckIn values
-('ma01','2002-12-12','08','01','00',N'khong',DEFAULT,12072005)
+('ma01','2002-12-12','08','01','00',N'khong',12072005)
 select *
 from
 CheckIn
@@ -318,11 +316,13 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY,
 Ma VARCHAR(20) UNIQUE, 
 NgayTao Date DEFAULT NULL,
 GioRa VARCHAR(50) DEFAULT NULL,
+PhutRa VARCHAR(50) DEFAULT NULL,
 BaoCao NVARCHAR(50) DEFAULT NULL,
+GhiChu NVARCHAR(50) DEFAULT NULL,
 MaQRNhanVien BIGINT
 )
 insert into CheckOut values
-('ma01','2002-12-12','17:00',N'khong',12072005)
+('ma01','2002-12-12','17','00',N'khong',N'khong',12072005)
 select *
 from
 CheckOut
