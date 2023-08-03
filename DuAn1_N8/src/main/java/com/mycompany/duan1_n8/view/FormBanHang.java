@@ -4,17 +4,122 @@
  */
 package com.mycompany.duan1_n8.view;
 
+import com.mycompany.duan1_n8.entity.ChiTietSP;
+import com.mycompany.duan1_n8.entity.DoiTuongSuDung;
+import com.mycompany.duan1_n8.entity.Lop;
+import com.mycompany.duan1_n8.entity.MauSac;
+import com.mycompany.duan1_n8.entity.NSX;
+import com.mycompany.duan1_n8.entity.NhanVien;
+import com.mycompany.duan1_n8.entity.SanPham;
+import com.mycompany.duan1_n8.entity.ThietKe;
+import com.mycompany.duan1_n8.service.ChiTietSPService;
+import com.mycompany.duan1_n8.service.DoiTuongSuDungService;
+import com.mycompany.duan1_n8.service.Impl.ChiTietSPServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.DoiTuongSuDungServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.LopServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.MauSacServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.NSXServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.NhanVienServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.SanPhamServiceImpl;
+import com.mycompany.duan1_n8.service.Impl.ThietKeServiceImpl;
+import com.mycompany.duan1_n8.service.LopService;
+import com.mycompany.duan1_n8.service.MauSacService;
+import com.mycompany.duan1_n8.service.NSXService;
+import com.mycompany.duan1_n8.service.NhanVienService;
+import com.mycompany.duan1_n8.service.SanPhamService;
+import com.mycompany.duan1_n8.service.ThietKeService;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author BuiDucMinh
  */
 public class FormBanHang extends javax.swing.JPanel {
 
+    private final SanPhamService sanPhamService;
+    private final NSXService nSXService;
+    private final MauSacService mauSacService;
+    private final LopService lopService;
+    private final ThietKeService thietKeService;
+    private final DoiTuongSuDungService dTSDService;
+    private final ChiTietSPService chiTietSPService;
+    private final NhanVienService nhanVienService;
+
+    private List<SanPham> listSanPham = new ArrayList<>();
+    private List<NSX> listNSX = new ArrayList<>();
+    private List<MauSac> listMauSac = new ArrayList<>();
+    private List<Lop> listLop = new ArrayList<>();
+    private List<ThietKe> listThietKe = new ArrayList<>();
+    private List<DoiTuongSuDung> listDTSD = new ArrayList<>();
+    private List<ChiTietSP> listCTSP = new ArrayList<>();
+    private List<NhanVien> listNhanVien = new ArrayList<>();
+
+    private DefaultTableModel tableModel = new DefaultTableModel();
+    private final DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
+    private final DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+    private final String maHoaDon = null;
+
     public FormBanHang() {
         initComponents();
-        
+        sanPhamService = new SanPhamServiceImpl();
+        nSXService = new NSXServiceImpl();
+        mauSacService = new MauSacServiceImpl();
+        lopService = new LopServiceImpl();
+        thietKeService = new ThietKeServiceImpl();
+        dTSDService = new DoiTuongSuDungServiceImpl();
+        chiTietSPService = new ChiTietSPServiceImpl();
+        nhanVienService = new NhanVienServiceImpl();
+
+        listSanPham = sanPhamService.getAllSP();
+        listNSX = nSXService.getAllNSX();
+        listMauSac = mauSacService.getAllMS();
+        listLop = lopService.getAllLop();
+        listThietKe = thietKeService.getAllTK();
+        listDTSD = dTSDService.getAllDTSD();
+        listCTSP = chiTietSPService.getAllCTSP();
+        listNhanVien = nhanVienService.getAll();
+
+        loadCBB();
+
+        for (ChiTietSP chiTietSP : chiTietSPService.getAllCTSP()) {
+            if (chiTietSP.getTrangThai().equals(1) == true) {
+                loadDataSP(listCTSP);
+            }
+        }
     }
 
+    // load CBB
+    private void loadCBB() {
+        cb_khachHang.removeAllItems();
+
+        cb_NhanVien.removeAllItems();
+        for (NhanVien nhanVien : nhanVienService.getAll()) {
+            cb_NhanVien.addItem(nhanVien.getTen());
+        }
+    }
+
+    // loadData San Pham
+    private void loadDataSP(List<ChiTietSP> listCTSP1) {
+        tableModel = (DefaultTableModel) tbl_bangSanPham.getModel();
+        tableModel.setRowCount(0);
+        for (ChiTietSP chiTietSP : listCTSP1) {
+            tableModel.addRow(new Object[]{
+                chiTietSP.getSanPham().getTen(),
+                decimalFormat.format(chiTietSP.getGia()),
+                chiTietSP.getSoLuong(),
+                chiTietSP.getMauSac().getTenMauSac(),
+                chiTietSP.getNsx().getTen(),
+                chiTietSP.getThietKe().getTen(),
+                chiTietSP.layThongTin()
+            });
+        }
+    }
+
+    // Tao Hoa Don
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,7 +152,7 @@ public class FormBanHang extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         cb_NhanVien = new javax.swing.JComboBox<>();
-        txt_maKH = new javax.swing.JTextField();
+        cb_khachHang = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -137,7 +242,6 @@ public class FormBanHang extends javax.swing.JPanel {
         jScrollPane2.setViewportView(tbl_gioHang);
 
         btn_xoa.setBackground(new java.awt.Color(153, 255, 204));
-        btn_xoa.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\close.png")); // NOI18N
         btn_xoa.setText("Xóa");
         btn_xoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,7 +250,6 @@ public class FormBanHang extends javax.swing.JPanel {
         });
 
         btn_xoaTat.setBackground(new java.awt.Color(153, 255, 204));
-        btn_xoaTat.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\close.png")); // NOI18N
         btn_xoaTat.setText("Xóa tất cả");
         btn_xoaTat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +258,6 @@ public class FormBanHang extends javax.swing.JPanel {
         });
 
         btn_themSL.setBackground(new java.awt.Color(153, 255, 204));
-        btn_themSL.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\add.png")); // NOI18N
         btn_themSL.setText("Thay Đổi SL");
         btn_themSL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +303,7 @@ public class FormBanHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên Sản Phẩm", "Đơn Giá", "Giảm Giá", "Màu Sắc", "NSX", "Kích Thước", "Trọng Lượng", "Số Lượng"
+                "Tên Sản Phẩm", "Đơn Giá", "Số Lượng", "Màu Sắc", "NSX", "Kích Thước", "Mo Ta"
             }
         ));
         tbl_bangSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -299,10 +401,10 @@ public class FormBanHang extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cb_NhanVien, 0, 128, Short.MAX_VALUE)
-                    .addComponent(txt_maKH))
+                    .addComponent(cb_khachHang, 0, 176, Short.MAX_VALUE)
+                    .addComponent(cb_NhanVien, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -311,7 +413,7 @@ public class FormBanHang extends javax.swing.JPanel {
                 .addGap(9, 9, 9)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txt_maKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -332,7 +434,6 @@ public class FormBanHang extends javax.swing.JPanel {
         jLabel12.setText("Tiền thừa trả khách:");
 
         btn_taoHoaDon.setBackground(new java.awt.Color(153, 255, 204));
-        btn_taoHoaDon.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\floppy-disk.png")); // NOI18N
         btn_taoHoaDon.setText("Tạo");
         btn_taoHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,7 +489,6 @@ public class FormBanHang extends javax.swing.JPanel {
         jScrollPane5.setViewportView(jTextArea1);
 
         btn_huy.setBackground(new java.awt.Color(153, 255, 204));
-        btn_huy.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\bill.png")); // NOI18N
         btn_huy.setText("Hủy hóa đơn");
         btn_huy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -397,7 +497,6 @@ public class FormBanHang extends javax.swing.JPanel {
         });
 
         btn_lamMoi.setBackground(new java.awt.Color(153, 255, 204));
-        btn_lamMoi.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\exchange.png")); // NOI18N
         btn_lamMoi.setText("Làm mới");
         btn_lamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,7 +506,6 @@ public class FormBanHang extends javax.swing.JPanel {
 
         btn_ThanhToan.setBackground(new java.awt.Color(153, 255, 204));
         btn_ThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_ThanhToan.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\wallet.png")); // NOI18N
         btn_ThanhToan.setText("Thanh toán");
         btn_ThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -550,7 +648,7 @@ public class FormBanHang extends javax.swing.JPanel {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 330, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -659,6 +757,7 @@ public class FormBanHang extends javax.swing.JPanel {
     private javax.swing.JButton btn_xoa;
     private javax.swing.JButton btn_xoaTat;
     private javax.swing.JComboBox<String> cb_NhanVien;
+    private javax.swing.JComboBox<String> cb_khachHang;
     private javax.swing.JComboBox<String> cb_mau;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -697,7 +796,6 @@ public class FormBanHang extends javax.swing.JPanel {
     private javax.swing.JTable tbl_gioHang;
     private javax.swing.JTable tbl_hoadon;
     private javax.swing.JTextField txt_maHoaDon1;
-    private javax.swing.JTextField txt_maKH;
     private javax.swing.JTextField txt_tenSP;
     private javax.swing.JTextField txt_tienKhachDua;
     // End of variables declaration//GEN-END:variables

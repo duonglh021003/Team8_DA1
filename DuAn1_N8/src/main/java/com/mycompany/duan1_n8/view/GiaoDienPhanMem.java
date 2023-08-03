@@ -4,8 +4,8 @@
  */
 package com.mycompany.duan1_n8.view;
 
+import com.mycompany.duan1_n8.View.FormKhuyenMai;
 import java.awt.Color;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -96,7 +96,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\product.png")); // NOI18N
         jLabel4.setText("Sản phẩm");
 
         javax.swing.GroupLayout btn_sanphamLayout = new javax.swing.GroupLayout(btn_sanpham);
@@ -124,7 +123,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\shopping-cart.png")); // NOI18N
         jLabel3.setText("Bán hàng");
 
         javax.swing.GroupLayout btn_banhangLayout = new javax.swing.GroupLayout(btn_banhang);
@@ -152,7 +150,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\promotions.png")); // NOI18N
         jLabel6.setText("Khuyến mãi");
 
         javax.swing.GroupLayout btn_khuyenmaiLayout = new javax.swing.GroupLayout(btn_khuyenmai);
@@ -180,7 +177,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\receipt.png")); // NOI18N
         jLabel5.setText("Hóa đơn");
 
         javax.swing.GroupLayout btn_hoadonLayout = new javax.swing.GroupLayout(btn_hoadon);
@@ -208,7 +204,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\employees.png")); // NOI18N
         jLabel8.setText("Nhân viên");
 
         javax.swing.GroupLayout btn_nhanvienLayout = new javax.swing.GroupLayout(btn_nhanvien);
@@ -236,7 +231,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\traveling.png")); // NOI18N
         jLabel7.setText("Khách hàng");
 
         javax.swing.GroupLayout btn_khachhangLayout = new javax.swing.GroupLayout(btn_khachhang);
@@ -264,7 +258,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\bar-chart.png")); // NOI18N
         jLabel9.setText("Thống kê");
 
         javax.swing.GroupLayout btn_thongkeLayout = new javax.swing.GroupLayout(btn_thongke);
@@ -295,7 +288,6 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel10.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\log-out.png")); // NOI18N
         jLabel10.setText("Đăng xuất");
         jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -366,14 +358,14 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1060, Short.MAX_VALUE)
+            .addGap(0, 1050, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 680, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 1060, 680));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 1050, 680));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

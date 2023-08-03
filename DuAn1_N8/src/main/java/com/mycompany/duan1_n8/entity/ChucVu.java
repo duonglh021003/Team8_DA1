@@ -4,7 +4,6 @@
  */
 package com.mycompany.duan1_n8.entity;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,6 @@ import lombok.ToString;
  *
  * @author BXT
  */
-
 @Table(name = "ChucVu")
 @Entity
 @AllArgsConstructor
@@ -31,22 +29,20 @@ import lombok.ToString;
 @Setter
 
 public class ChucVu {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Long id;
-    
+
     @Column(name = "Ma")
     private String ma;
-    
+
     @Column(name = "Ten")
     private String ten;
 
     @Override
     public String toString() {
-        return  ten ;
+        return ten;
     }
-    
-    
 }

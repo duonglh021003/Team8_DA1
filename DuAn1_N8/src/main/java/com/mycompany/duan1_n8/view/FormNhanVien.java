@@ -4,7 +4,7 @@
  */
 package com.mycompany.duan1_n8.view;
 
-import com.mycompany.duan1_n8.utilities.Until;
+import com.mycompany.duan1_n8.untils.Until;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import com.mycompany.duan1_n8.repository.ChucVuRepository;
@@ -690,7 +690,7 @@ public class FormNhanVien extends javax.swing.JPanel {
 
         }
         NhanVien nv = getData();
-        nv.setId(nhanVienService.getAll().get(row).getId());
+//        nv.setId(nhanVienService.getAll().get(row).getId());
         String query = nhanVienService.Update(nv);
         JOptionPane.showMessageDialog(this, query);
         loadData();
@@ -933,7 +933,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         }
 
         Cell cell = row.createCell(Until.COLUMN_INDEX_ID);
-        cell.setCellValue(nhanVien.getId());
+//        cell.setCellValue(nhanVien.getId());
 
         cell = row.createCell(Until.COLUMN_INDEX_MA);
         cell.setCellValue(nhanVien.getMa());

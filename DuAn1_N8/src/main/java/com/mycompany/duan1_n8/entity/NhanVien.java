@@ -62,7 +62,7 @@ public class NhanVien {
     private Date ngaySinh;
     
     @Column(name = "Sdt")
-    private String sdt;
+    private Integer sdt;
     
     @Column(name = "MatKhau")
     private String matKhau;
