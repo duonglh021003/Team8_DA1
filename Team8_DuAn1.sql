@@ -304,7 +304,16 @@ BaoCao NVARCHAR(50) DEFAULT NULL,
 MaQRNhanVien BIGINT
 )
 insert into CheckIn values
-('ma01','2002-12-12','08','01','00',N'khong',12072005)
+('ma01','2002-12-12','08','01','00',N'khong',12072005),
+('ma02','2002-12-12','07','45','00',N'khong',12072005),
+('ma03','2002-12-12','08','14','00',N'khong',12072005),
+('ma04','2002-12-12','08','16','00',N'khong',12072005),
+('ma05','2002-12-12','08','00','00',N'khong',12072005),
+('ma06','2002-12-12','07','59','00',N'khong',12072005),
+('ma07','2002-12-12','13','14','00',N'khong',12072005),
+('ma08','2002-12-12','12','44','00',N'khong',12072005),
+('ma09','2002-12-12','13','09','00',N'khong',12072005)
+
 select *
 from
 CheckIn
@@ -379,10 +388,10 @@ MoTa NVARCHAR(50) DEFAULT NULL,
 TrangThai INT DEFAULT 0 ,
 MaQRKhachHang BIGINT ,
 MaQRNhanVien BIGINT,
-IdPhieuGiamGia BIGINT ,
+
 )
 insert into HoaDon values
-('ma01','2002-12-12',N'không',DEFAULT,87647384,12072005,1)
+('ma01','2002-12-12',N'không',DEFAULT,87647384,12072005)
 select *
 from
 HoaDon
@@ -397,12 +406,14 @@ SoLuong INT,
 DonGia DECIMAL(20,0) DEFAULT 0,
 TongTien DECIMAL(20,0), 
 TrangThai INT DEFAULT 0 ,
+IdPhieuGiamGia BIGINT ,
 CONSTRAINT PK_HoaDonChiTiet PRIMARY KEY (IdHoaDon,MaQRCTSP),
 CONSTRAINT FK1 FOREIGN KEY(IdHoaDon) REFERENCES HoaDon(Id),
 CONSTRAINT FK2 FOREIGN KEY(MaQRCTSP) REFERENCES ChiTietSP(MaQR),
+CONSTRAINT FK3 FOREIGN KEY(IdPhieuGiamGia) REFERENCES PhieuGiamGia(Id),
 )
 insert into HoaDonChiTiet values
-(1,83758902,5,10,50,DEFAULT)
+(1,83758902,5,10,50,DEFAULT,1)
 select *
 from
 HoaDonChiTiet
@@ -427,8 +438,6 @@ ALTER TABLE NhanVien ADD FOREIGN KEY(IdChucVu) REFERENCES ChucVu(Id)
 ALTER TABLE HoaDon ADD FOREIGN KEY(MaQRNhanVien) REFERENCES NhanVien(MaQR)
 --HoaDon - KhachHang
 ALTER TABLE HoaDon ADD FOREIGN KEY(MaQRKhachHang) REFERENCES KhachHang(MaQR)
--- HoaDon - PhieuGiamGia
-ALTER TABLE HoaDon ADD FOREIGN KEY(IdPhieuGiamGia) REFERENCES PhieuGiamGia(Id)
 -- DanhSachLamViec - T2
 ALTER TABLE DanhSachLamViec ADD FOREIGN KEY(IdT2) REFERENCES Thu2(Id)
 -- DanhSachLamViec - T3
