@@ -32,11 +32,11 @@ public class PhieuGiamGiaRepository {
         return phieuGiamGias;
     }
 
-    public PhieuGiamGia getOne(Long idPhieuGiamGia) {
+    public PhieuGiamGia getOne(String maPhieuGiamGia) {
         PhieuGiamGia phieuGiamGia = null;
         try ( Session session = HibernateUtil.getFACTORY().openSession()) {
-            Query query = session.createQuery("FROM PhieuGiamGia where Id = :id");
-            query.setParameter("id", idPhieuGiamGia);
+            Query query = session.createQuery("FROM PhieuGiamGia where Ma = :maPhieuGiamGia");
+            query.setParameter("maPhieuGiamGia", maPhieuGiamGia);
             phieuGiamGia = (PhieuGiamGia) query.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace(System.out);

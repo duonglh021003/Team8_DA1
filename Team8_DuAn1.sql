@@ -1,4 +1,5 @@
-﻿CREATE DATABASE Team8_DuAn1
+﻿CREATE DATABASE Team8_DuAn1_2408
+USE Team8_DuAn1_2408
 
 GO
 -- ThietKe
@@ -9,12 +10,6 @@ Ten NVARCHAR(50) DEFAULT NULL,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into ThietKe values
-('ma02',N'dương','2002-12-12','2002-12-12')
-select *
-from 
-ThietKe
-
 
 GO
 -- DoiTuongSuDung
@@ -26,12 +21,6 @@ KichThuoc DECIMAL(20,2) DEFAULT NULL,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into DoiTuongSuDung values
-('ma02',N'người lớn',3.3,'2002-12-12','2002-12-12')
-select *
-from
-DoiTuongSuDung
-
 
 GO
 -- NSX
@@ -43,12 +32,6 @@ QuocGia NVARCHAR(50) DEFAULT NULL,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into NSX values
-('ma01',N'FPT',N'VN','2002-12-12','2002-12-12')
-select *
-from
-NSX
-
 
 GO
 -- MauSac
@@ -59,12 +42,6 @@ Ten NVARCHAR(50) DEFAULT NULL ,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into MauSac values
-('ma01',N'đỏ','2002-12-12','2002-12-12')
-select *
-from
-MauSac
-
 
 GO
 -- SanPham
@@ -75,12 +52,6 @@ Ten NVARCHAR(50) DEFAULT NULL ,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into SanPham values
-('ma01',N'3D','2002-12-12','2002-12-12')
-select *
-from
-SanPham
-
 
 GO
 -- Lop
@@ -90,12 +61,6 @@ SoLuong int DEFAULT NULL,
 NgayTao Date DEFAULT NULL,
 NgaySua Date DEFAULT NULL,
 )
-insert into Lop values
-('5','2002-12-12','2002-12-12')
-select *
-from
-Lop
-
 
 GO
 --ChiTietSP
@@ -115,12 +80,6 @@ IdMS BIGINT ,
 IdSP BIGINT , 
 IdLop BIGINT , 
 )
-insert into ChiTietSP values
-(83758902,'2002-12-12','2002-12-12',10,N'không',5,20,DEFAULT,1,1,1,1,1,1)
-select *
-from
-ChiTietSP
-
 
 GO
 -- ChucVu
@@ -143,15 +102,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY ,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu2 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu2
-
 
 GO
 -- Thu3
@@ -160,15 +110,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY ,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu3 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu3
-
 GO
 -- T4
 CREATE TABLE Thu4(
@@ -176,15 +117,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY ,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu4 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu4
-
 GO
 -- T5
 CREATE TABLE Thu5(
@@ -192,15 +124,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu5 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu5
-
 GO
 -- T6
 CREATE TABLE Thu6(
@@ -208,15 +131,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu6 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu6
-
 GO
 -- T7
 CREATE TABLE Thu7(
@@ -224,15 +138,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into Thu7 values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-Thu7
-
 GO
 -- CN
 CREATE TABLE ChuNhat(
@@ -240,15 +145,6 @@ Id BIGINT IDENTITY(1,1) PRIMARY KEY,
 Ma VARCHAR(20) UNIQUE, 
 Ca NVARCHAR(50) DEFAULT NULL 
 )
-insert into ChuNhat values
-('ma01',N'nghỉ'),
-('ma02',N'ca 1(8-12)'),
-('ma03',N'ca 2(13-17h)'),
-('ma04',N'full time(8-17h)')
-select *
-from
-ChuNhat
-
 GO
 --NhanVien
 CREATE TABLE NhanVien(
@@ -265,7 +161,8 @@ TrangThai INT DEFAULT 0 ,
 IdChucVu BIGINT , 
 )
 insert into NhanVien values
-(12072005,'ma01','dương',N'true',N'd@gmail.com',N'HN','2002-12-12','0123467890','1',DEFAULT,1)
+(12072005,'ma01','minh',N'true',N'minh@gmail.com',N'HN','2003-03-09','0388598451','1',DEFAULT,1),
+(12072006,'ma02','dương',N'true',N'd@gmail.com',N'HN','2002-12-12','0123467890','1',DEFAULT,1)
 select *
 from
 NhanVien
@@ -286,12 +183,6 @@ IdT7 BIGINT ,
 IdCN BIGINT ,
 MaQRNhanVien BIGINT
 )
-insert into DanhSachLamViec values
-('ma01','2002-12-12','2002-12-12',2,2,2,2,2,2,2,12072005)
-select *
-from
-DanhSachLamViec
-
 GO
 -- CheckIn
 CREATE TABLE CheckIn(
@@ -305,12 +196,6 @@ BaoCao NVARCHAR(50) DEFAULT NULL,
 TrangThai INT DEFAULT 0 ,
 MaQRNhanVien BIGINT
 )
-insert into CheckIn values
-('ma01','2002-12-12','08','01','00',N'khong',DEFAULT,12072005)
-select *
-from
-CheckIn
-
 GO
 -- CheckOut
 CREATE TABLE CheckOut(
@@ -321,16 +206,8 @@ GioRa VARCHAR(50) DEFAULT NULL,
 BaoCao NVARCHAR(50) DEFAULT NULL,
 MaQRNhanVien BIGINT
 )
-insert into CheckOut values
-('ma01','2002-12-12','17:00',N'khong',12072005)
-select *
-from
-CheckOut
-
-
-
-
 GO
+
 --KhachHang
 CREATE TABLE KhachHang(
 MaQR BIGINT PRIMARY KEY ,
@@ -344,12 +221,8 @@ Sdt VARCHAR(15) DEFAULT NULL,
 TrangThai INT DEFAULT 0 ,
 )
 insert into KhachHang values
-(87647384,'ma01','dương',N'true',N'd@gmail.com',N'HN','2002-12-12','0123467890',DEFAULT)
-select *
-from
-KhachHang
-
-
+(87647384,'ma01','minh',N'true',N'minh@gmail.com',N'HN','2003-03-09','0123467890',DEFAULT),
+(87647385,'ma02','dương',N'true',N'd@gmail.com',N'HN','2002-12-12','0123467890',DEFAULT)
 GO
 --PhieuGiamGia
 CREATE TABLE PhieuGiamGia(
@@ -362,32 +235,22 @@ HinhThucGiamGia VARCHAR(50) DEFAULT NULL,
 GiaTriGiam DECIMAL(20,0) DEFAULT NULL,
 TrangThai INT DEFAULT 0 , 
 )
-insert into PhieuGiamGia values
-('ma01',N'phiếu 1','2002-12-12','2002-12-12',N'hinh 1',100,DEFAULT)
-select *
-from
-PhieuGiamGia
-
-
 GO
 --HoaDon
 CREATE TABLE HoaDon(
 Id BIGINT IDENTITY(1,1) PRIMARY KEY ,
 Ma VARCHAR(20) UNIQUE,
 NgayTao Date DEFAULT NULL,
+NgayThanhToan Date DEFAULT NULL,
+NgayHuy Date DEFAULT NULL,
 MoTa NVARCHAR(50) DEFAULT NULL,
+TienKhachDua DECIMAL(20, 0) DEFAULT 0,
+TienThua DECIMAL(20, 0) DEFAULT 0,
 TrangThai INT DEFAULT 0 ,
 MaQRKhachHang BIGINT ,
 MaQRNhanVien BIGINT,
 IdPhieuGiamGia BIGINT ,
 )
-insert into HoaDon values
-('ma01','2002-12-12',N'không',DEFAULT,87647384,12072005,1)
-select *
-from
-HoaDon
-
-
 GO
 -- HoaDonChiTiet
 CREATE TABLE HoaDonChiTiet(
@@ -401,12 +264,6 @@ CONSTRAINT PK_HoaDonChiTiet PRIMARY KEY (IdHoaDon,MaQRCTSP),
 CONSTRAINT FK1 FOREIGN KEY(IdHoaDon) REFERENCES HoaDon(Id),
 CONSTRAINT FK2 FOREIGN KEY(MaQRCTSP) REFERENCES ChiTietSP(MaQR),
 )
-insert into HoaDonChiTiet values
-(1,83758902,5,10,50,DEFAULT)
-select *
-from
-HoaDonChiTiet
-
 
 GO
 -- ChiTietSP - ThietKe

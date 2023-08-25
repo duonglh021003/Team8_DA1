@@ -9,6 +9,9 @@ import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.entity.DoiTuongSuDung;
+import com.mycompany.duan1_n8.entity.HoaDon;
+import com.mycompany.duan1_n8.entity.HoaDonChiTiet;
+import com.mycompany.duan1_n8.entity.KhachHang;
 import com.mycompany.duan1_n8.entity.Lop;
 import com.mycompany.duan1_n8.entity.MauSac;
 import com.mycompany.duan1_n8.entity.NSX;
@@ -43,13 +46,13 @@ public class HibernateUtil {
         Properties properties = new Properties();
         properties.put(Environment.DIALECT, "org.hibernate.dialect.SQLServerDialect");
         properties.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        properties.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=Team8_DuAn1");
+        properties.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=Team8_DuAn1_2408");
         properties.put(Environment.USER, "sa");
         properties.put(Environment.PASS, "123123");
         properties.put(Environment.SHOW_SQL, "true");
 
         conf.setProperties(properties);
-       
+
         conf.addAnnotatedClass(Thu2.class);
         conf.addAnnotatedClass(Thu3.class);
         conf.addAnnotatedClass(Thu4.class);
@@ -60,7 +63,7 @@ public class HibernateUtil {
         conf.addAnnotatedClass(ChucVu.class);
         conf.addAnnotatedClass(NhanVien.class);
         conf.addAnnotatedClass(DanhSachLamViec.class);
-        
+
         // minh
         conf.addAnnotatedClass(PhieuGiamGia.class);
         conf.addAnnotatedClass(MauSac.class);
@@ -70,7 +73,10 @@ public class HibernateUtil {
         conf.addAnnotatedClass(DoiTuongSuDung.class);
         conf.addAnnotatedClass(SanPham.class);
         conf.addAnnotatedClass(ChiTietSP.class);
-        
+        conf.addAnnotatedClass(KhachHang.class);
+        conf.addAnnotatedClass(HoaDon.class);
+        conf.addAnnotatedClass(HoaDonChiTiet.class);
+
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);

@@ -27,6 +27,7 @@ import com.mycompany.duan1_n8.service.SanPhamService;
 import com.mycompany.duan1_n8.service.ThietKeService;
 import java.awt.Color;
 import java.awt.HeadlessException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -224,7 +225,7 @@ public class FormSanPham extends javax.swing.JPanel {
                 .hanSuDung(dateHanSuDung.getDate())
                 .moTa(txtMoTa.getText().trim())
                 .soLuong(Integer.parseInt(txtSoLuong.getText().trim()))
-                .gia(Float.parseFloat(txtGia.getText().trim()))
+                .gia(new BigDecimal(txtGia.getText().trim()))
                 .trangThai(1)
                 .build();
         System.out.println("Add Form Thanh Cong");
@@ -244,7 +245,7 @@ public class FormSanPham extends javax.swing.JPanel {
                 .hanSuDung(dateHanSuDung.getDate())
                 .moTa(txtMoTa.getText().trim())
                 .soLuong(Integer.parseInt(txtSoLuong.getText().trim()))
-                .gia(Float.parseFloat(txtGia.getText().trim()))
+                .gia(new BigDecimal(txtGia.getText().trim()))
                 .trangThai(radConHang.isSelected() ? 1 : 0)
                 .build();
         System.out.println("Update Form Thanh Cong");

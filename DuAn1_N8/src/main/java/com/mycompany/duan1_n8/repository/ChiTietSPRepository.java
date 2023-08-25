@@ -31,6 +31,22 @@ public class ChiTietSPRepository {
         return listCTSP;
     }
 
+    public ChiTietSP getOne(Long idSP) {
+        ChiTietSP chiTietSP = null;
+        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
+            Transaction transaction = null;
+            transaction = session.getTransaction();
+            transaction.begin();
+            Query query = session.createQuery("FROM ChiTietSP WHERE MaQR = :idSP");
+            query.setParameter("idSP", idSP);
+            chiTietSP = (ChiTietSP) query.getResultList().get(0);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return chiTietSP;
+    }
+
     public boolean addCTSP(ChiTietSP chiTietSP) {
         Transaction transaction = null;
         try ( Session session = HibernateUtil.getFACTORY().openSession()) {

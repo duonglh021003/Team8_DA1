@@ -4,10 +4,14 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,7 +35,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class ChiTietSP {
+public class ChiTietSP implements Serializable{
 
     @Id
     @Column(name = "MaQR")
@@ -44,7 +48,7 @@ public class ChiTietSP {
     private Date hanSuDung;
 
     @Column(name = "Gia")
-    private Float gia;
+    private BigDecimal gia;
 
     @Column(name = "MoTa")
     private String moTa;
@@ -79,11 +83,15 @@ public class ChiTietSP {
     @JoinColumn(name = "IdLop", referencedColumnName = "Id")
     private Lop lop;
 
+    public ChiTietSP(Integer soLuong) {
+        this.soLuong = soLuong;
+    }
+
     public String layThongTin() {
         if (this.moTa.equals("")) {
             return "Khong Co Thong Tin";
-        }else{
-            return moTa; 
+        } else {
+            return moTa;
         }
 
     }
