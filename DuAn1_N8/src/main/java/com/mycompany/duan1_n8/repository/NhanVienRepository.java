@@ -73,4 +73,20 @@ public class NhanVienRepository {
         return check;
     }
 
+    public List<NhanVien> searchTen(Long maQR) {
+        List<NhanVien> listSearchTen = new ArrayList<>();
+        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
+            Query query = session.createQuery("FROM NhanVien WHERE MaQR = :maQR");
+            query.setParameter("maQR", maQR);
+            listSearchTen = query.getResultList();
+            
+            return listSearchTen;
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+   
 }

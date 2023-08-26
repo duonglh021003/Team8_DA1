@@ -436,9 +436,9 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
 
     private void btn_checkInMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_checkInMousePressed
         // TODO add your handling code here:
-        setColor(btn_checkIn);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
-        setpanal(new FormCheckIn());
+//        setColor(btn_checkIn);
+//        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
+//        setpanal(new FormCheckIn());
     }//GEN-LAST:event_btn_checkInMousePressed
 
     private void btn_dangxuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dangxuatMousePressed

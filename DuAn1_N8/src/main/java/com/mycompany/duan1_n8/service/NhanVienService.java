@@ -21,4 +21,6 @@ public interface NhanVienService {
     
     String Update(NhanVien nhanVien );
     
+    List<NhanVien> getByMaQr(Integer MaQr);
+   
 }

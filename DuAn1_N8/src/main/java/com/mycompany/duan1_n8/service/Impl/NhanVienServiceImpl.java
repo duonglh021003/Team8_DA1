@@ -7,6 +7,7 @@ package com.mycompany.duan1_n8.service.Impl;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import com.mycompany.duan1_n8.repository.NhanVienRepository;
 import com.mycompany.duan1_n8.service.NhanVienService;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,5 +46,19 @@ public class NhanVienServiceImpl implements NhanVienService {
         }
 
     }
+
+    @Override
+    public List<NhanVien> getByMaQr(Integer MaQr) {
+       
+        List<NhanVien> list = new ArrayList<>();
+        for(NhanVien nhanVien : nhanVienRepository.getAll()){
+            if(nhanVien.getMaQr().equals(MaQr)){
+                list.add(nhanVien);
+            }
+        }
+        return list;
+    }
+
+    
 
 }

@@ -6,6 +6,7 @@ package com.mycompany.duan1_n8.application;
 
 
 import com.mycompany.duan1_n8.view.GiaoDienDangNhap;
+import com.mycompany.duan1_n8.view.GiaoDienPhanMem;
 
 
 /**
@@ -15,6 +16,6 @@ import com.mycompany.duan1_n8.view.GiaoDienDangNhap;
 public class DuAn1_N8 {
 
     public static void main(String[] args) {
-        new GiaoDienDangNhap().setVisible(true);
+        new GiaoDienPhanMem().setVisible(true);
     }
 }
