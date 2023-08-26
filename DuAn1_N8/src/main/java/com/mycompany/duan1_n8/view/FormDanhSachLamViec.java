@@ -205,10 +205,10 @@ public class FormDanhSachLamViec extends javax.swing.JFrame {
                         txtMaQR1.setText(result.getText());
                     }
 
-                    count++;
-                    if (count >= 100) {
-                        break;
-                    }
+//                    count++;
+//                    if (count >= 100) {
+//                        break;
+//                    }
                     if (isCameraClosed) {
                         break;
                     }

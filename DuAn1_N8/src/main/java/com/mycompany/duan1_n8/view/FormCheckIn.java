@@ -181,14 +181,11 @@ public class FormCheckIn extends javax.swing.JPanel {
 //        private void clear() {
 //        txt_ma.setText("");
 //        txtMaQR.setText("");
-//        txt_baoCao.setText("");
-//        
+//        txt_baoCao.setText("");   
 //        txt_gio.setText("");
-//        txt_ngaySinh.setText("");
-//        txt_ten.setText("");
-//        txt_dienthoai.setText("");
-//        txt_mk.setText("");
-//
+//        txt_moTa.setText("");
+//        txt_ngayTao.setText("");
+//        txt_phut.setText("");
 //    }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -390,8 +387,9 @@ public class FormCheckIn extends javax.swing.JPanel {
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("check in", jPanel12);
@@ -507,7 +505,9 @@ public class FormCheckIn extends javax.swing.JPanel {
         // TODO add your handling code here:
         int row = tbl_checkIn.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tbl_checkIn.getModel();
-        txt_ngayTao.setText(model.getValueAt(row, 0).toString());
+        txt_ma.setText(model.getValueAt(row, 0).toString());
+        txt_baoCao.setText(model.getValueAt(row, 3).toString());
+        txtMaQR.setText(model.getValueAt(row, 4).toString());
     }//GEN-LAST:event_tbl_checkInMouseClicked
 
     private void txtMaQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaQRActionPerformed

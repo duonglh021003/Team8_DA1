@@ -113,13 +113,13 @@ public class FormNhanVien extends javax.swing.JPanel {
                         txtMaQR.setText(result.getText());
                     }
 
-                    count++;
-                    if (count >= 100) {
-                        break;
-                    }
-                    if (isCameraClosed) {
-                        break;
-                    }
+//                    count++;
+//                    if (count >= 1000) {
+//                        break;
+//                    }
+//                    if (isCameraClosed) {
+//                        break;
+//                    }
                 } while (true);
             }
         };
