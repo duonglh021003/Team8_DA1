@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +52,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private WebcamPanel webcamPanel;
     private Thread captureThread;
     private boolean isCameraClosed = false;
+    private String selectedTable = "";
 
     /**
      * Creates new form Form
@@ -58,16 +60,13 @@ public class FormNhanVien extends javax.swing.JPanel {
     public FormNhanVien() {
         initComponents();
         initComponents();
-        
-        for (NhanVien nv : nhanVienService.getAll()) {
-            if (nv.getTrangThai().equals(0) == true) {
-                loadDataDangHd();
-            } 
 
-        }
         cbbChucVu();
-        initWebcam();
-        captureThread();
+//        initWebcam();
+//        captureThread();
+        loadDataNHD();
+        loadDataDangHd();
+
     }
 
     public void initWebcam() {
@@ -114,13 +113,46 @@ public class FormNhanVien extends javax.swing.JPanel {
                         txtMaQR.setText(result.getText());
                     }
 
-                    count++;
-                    if (count >= 100) {
-                        break;
+                } while (true);
+            }
+        };
+        captureThread.setDaemon(true);
+        captureThread.start();
+    }
+    
+    public void captureThreadSearch() {
+
+        captureThread = new Thread() {
+            @Override
+
+            public void run() {
+                int count = 0;
+                do {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+
+                        ex.printStackTrace();
                     }
-                    if (isCameraClosed) {
-                        break;
+                    Result result = null;
+                    BufferedImage image = null;
+                    if (webcam.open()) {
+                        if ((image = webcam.getImage()) == null) {
+                            continue;
+                        }
                     }
+                    LuminanceSource source = new BufferedImageLuminanceSource(image);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                    try {
+                        result = new MultiFormatReader().decode(bitmap);
+                    } catch (NotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (result != null) {
+                        txt_searchMaQr.setText(result.getText());
+                    }
+
+
                 } while (true);
             }
         };
@@ -139,6 +171,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         List<NhanVien> listNV = nhanVienService.getAll();
         model = (DefaultTableModel) tbl_nhanvien_lamviec.getModel();
         model.setRowCount(0);
+
         for (NhanVien p : listNV) {
             if (p.getTrangThai() == 0) {
                 model.addRow(new Object[]{
@@ -161,6 +194,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         List<NhanVien> listNV = nhanVienService.getAll();
         model = (DefaultTableModel) tbl_nhanvien_NLV.getModel();
         model.setRowCount(0);
+
         for (NhanVien p : listNV) {
             if (p.getTrangThai() == 1) {
                 model.addRow(new Object[]{
@@ -278,7 +312,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     }
 
     public boolean checkTrungMaQR() {
-        String ma = txtMaQR.getText();
+        Integer ma = Integer.valueOf(txtMaQR.getText().trim());
         for (NhanVien nv : nhanVienService.getAll()) {
             if (nv.getMaQr().equals(ma)) {
                 JOptionPane.showMessageDialog(this, "mã qr không được trùng");
@@ -299,6 +333,31 @@ public class FormNhanVien extends javax.swing.JPanel {
         txt_dienthoai.setText("");
         txt_mk.setText("");
 
+    }
+
+    private void searchMaQr() {
+        List<NhanVien> list = nhanVienService.getAll();
+        Integer maQr = Integer.valueOf(txt_searchMaQr.getText());
+        
+
+        model = (DefaultTableModel) tbl_nhanvien_lamviec.getModel();
+        model.setRowCount(0);
+        for (NhanVien p : list) {
+            if (p.getMaQr().equals(maQr)) {
+                model.addRow(new Object[]{
+                    p.getMaQr(),
+                    p.getMa(),
+                    p.getTen(),
+                    p.getNgaySinh(),
+                    p.getGioiTinh() == true ? "Nam" : "Nữ",
+                    p.getQueQuan(),
+                    p.getSdt(),
+                    p.getEmail(),
+                    p.getMatKhau(),
+                    p.getChucVu(),
+                    p.getTrangThai() == 0 ? "đang hoạt động" : "ngừng hoạt động",});
+            }
+        }
     }
 
     /**
@@ -335,6 +394,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         btn_them = new javax.swing.JButton();
         btn_clear = new javax.swing.JButton();
         btn_sua = new javax.swing.JButton();
+        btn_chonCa = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         txt_mk = new javax.swing.JPasswordField();
         lbl_show = new javax.swing.JLabel();
@@ -343,8 +403,9 @@ public class FormNhanVien extends javax.swing.JPanel {
         txt_ngaySinh = new javax.swing.JTextField();
         rdo_nhd = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
-        txt_timsdt = new javax.swing.JTextField();
+        txt_searchMaQr = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        btn_qr01 = new javax.swing.JButton();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -425,6 +486,14 @@ public class FormNhanVien extends javax.swing.JPanel {
             }
         });
 
+        btn_chonCa.setBackground(new java.awt.Color(153, 255, 204));
+        btn_chonCa.setText("chọn ca");
+        btn_chonCa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_chonCaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -434,7 +503,8 @@ public class FormNhanVien extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_clear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_sua, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_them, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                    .addComponent(btn_them, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                    .addComponent(btn_chonCa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
         jPanel2Layout.setVerticalGroup(
@@ -446,6 +516,8 @@ public class FormNhanVien extends javax.swing.JPanel {
                 .addComponent(btn_sua)
                 .addGap(18, 18, 18)
                 .addComponent(btn_clear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_chonCa)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -594,26 +666,38 @@ public class FormNhanVien extends javax.swing.JPanel {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        txt_timsdt.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        txt_searchMaQr.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txt_searchMaQrCaretUpdate(evt);
+            }
+        });
+        txt_searchMaQr.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txt_timsdtInputMethodTextChanged(evt);
+                txt_searchMaQrInputMethodTextChanged(evt);
             }
         });
-        txt_timsdt.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_searchMaQr.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_timsdtKeyPressed(evt);
+                txt_searchMaQrKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_timsdtKeyReleased(evt);
+                txt_searchMaQrKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_timsdtKeyTyped(evt);
+                txt_searchMaQrKeyTyped(evt);
             }
         });
 
-        jLabel13.setText("Tìm theo số điện thoại");
+        jLabel13.setText("Tìm theo mã qr");
+
+        btn_qr01.setText("quét QR");
+        btn_qr01.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_qr01ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -622,18 +706,21 @@ public class FormNhanVien extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addGap(0, 304, Short.MAX_VALUE))
-                    .addComponent(txt_timsdt))
-                .addContainerGap())
+                        .addComponent(txt_searchMaQr, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_qr01)))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txt_timsdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_searchMaQr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_qr01))
                 .addGap(14, 14, 14))
         );
 
@@ -723,7 +810,16 @@ public class FormNhanVien extends javax.swing.JPanel {
 
         jLabel15.setText("mã QR");
 
-        txtMaQR.setEditable(false);
+        txtMaQR.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtMaQRCaretUpdate(evt);
+            }
+        });
+        txtMaQR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaQRActionPerformed(evt);
+            }
+        });
 
         btn_stop.setText("Stop QR");
         btn_stop.addActionListener(new java.awt.event.ActionListener() {
@@ -755,12 +851,12 @@ public class FormNhanVien extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
-                            .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(btn_stop)
                                 .addGap(33, 33, 33)
-                                .addComponent(btn_qr)))
-                        .addGap(18, 18, 18)
+                                .addComponent(btn_qr))
+                            .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1035, Short.MAX_VALUE))
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -832,43 +928,68 @@ public class FormNhanVien extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_clearActionPerformed
 
     private void btn_suaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_suaActionPerformed
-        Integer row = tbl_nhanvien_lamviec.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "vui lòng chọn dòng trên table");
-            return;
 
+        if (selectedTable.equals("tbl_nhanvien_NLV")) {
+
+            Integer row = tbl_nhanvien_NLV.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng trên table 'tbl_nhanvien_lamviec'");
+                return;
+            }
+
+            NhanVien nv = getData();
+            nv.setMaQr(nhanVienService.getAll().get(row).getMaQr());
+
+            String query = nhanVienService.Update(nv);
+            JOptionPane.showMessageDialog(this, query);
+
+            loadDataNHD();
+            loadDataDangHd();
+        } else if (selectedTable.equals("tbl_nhanvien_lamviec")) {
+
+            Integer row = tbl_nhanvien_lamviec.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng trên table 'tbl_nhanvien_NLV'");
+                return;
+            }
+
+            NhanVien nv = getData();
+            nv.setMaQr(nhanVienService.getAll().get(row).getMaQr());
+
+            String query = nhanVienService.Update(nv);
+            JOptionPane.showMessageDialog(this, query);
+
+            loadDataNHD();
+            loadDataDangHd();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn bảng để cập nhật thông tin");
         }
-        NhanVien nv = getData();
-        nv.setMaQr(nhanVienService.getAll().get(row).getMaQr());
-        System.out.println("aaaaaaaaaaaaaaa=    " + nv);
-        System.out.println("bbbbbbbbbbbbbbb=    " + nhanVienService.getAll());
-        System.out.println("ccccccccccccccc=    " + nhanVienService.getAll().get(row).getMaQr());
-        String query = nhanVienService.Update(nv);
-        JOptionPane.showMessageDialog(this, query);
-        loadDataDangHd();
+
+
     }//GEN-LAST:event_btn_suaActionPerformed
 
     private void lbl_showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_showMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_lbl_showMouseClicked
 
-    private void txt_timsdtInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_timsdtInputMethodTextChanged
+    private void txt_searchMaQrInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_searchMaQrInputMethodTextChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_timsdtInputMethodTextChanged
+    }//GEN-LAST:event_txt_searchMaQrInputMethodTextChanged
 
-    private void txt_timsdtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_timsdtKeyPressed
+    private void txt_searchMaQrKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQrKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_timsdtKeyPressed
+    }//GEN-LAST:event_txt_searchMaQrKeyPressed
 
-    private void txt_timsdtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_timsdtKeyReleased
+    private void txt_searchMaQrKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQrKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_timsdtKeyReleased
+    }//GEN-LAST:event_txt_searchMaQrKeyReleased
 
-    private void txt_timsdtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_timsdtKeyTyped
+    private void txt_searchMaQrKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQrKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_timsdtKeyTyped
+    }//GEN-LAST:event_txt_searchMaQrKeyTyped
 
     private void tbl_nhanvien_lamviecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_nhanvien_lamviecMouseClicked
+        selectedTable = "tbl_nhanvien_lamviec";
         Integer row = tbl_nhanvien_lamviec.getSelectedRow();
         txtMaQR.setText(tbl_nhanvien_lamviec.getValueAt(row, 0).toString());
         txt_ma.setText(tbl_nhanvien_lamviec.getValueAt(row, 1).toString());
@@ -900,21 +1021,71 @@ public class FormNhanVien extends javax.swing.JPanel {
         // TODO add your handling code here:
         initWebcam();
         captureThread();
+        loadDataDangHd();
     }//GEN-LAST:event_btn_qrActionPerformed
+
+    private void tbl_nhanvien_NLVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_nhanvien_NLVMouseClicked
+        // TODO add your handling code here:
+        selectedTable = "tbl_nhanvien_NLV";
+        Integer row = tbl_nhanvien_NLV.getSelectedRow();
+        txtMaQR.setText(tbl_nhanvien_NLV.getValueAt(row, 0).toString());
+        txt_ma.setText(tbl_nhanvien_NLV.getValueAt(row, 1).toString());
+        txt_ten.setText(tbl_nhanvien_NLV.getValueAt(row, 2).toString());
+        txt_ngaySinh.setText(tbl_nhanvien_NLV.getValueAt(row, 3).toString());
+        if (tbl_nhanvien_NLV.getValueAt(row, 4).equals("Nam")) {
+            rdo_nam.setSelected(true);
+        } else {
+            rdo_nu.setSelected(true);
+        }
+        txt_diachi.setText(tbl_nhanvien_NLV.getValueAt(row, 5).toString());
+        txt_dienthoai.setText(tbl_nhanvien_NLV.getValueAt(row, 6).toString());
+        txt_email.setText(tbl_nhanvien_NLV.getValueAt(row, 7).toString());
+        txt_mk.setText(tbl_nhanvien_NLV.getValueAt(row, 8).toString());
+        cbo_vaitro.setSelectedItem(tbl_nhanvien_NLV.getValueAt(row, 9).toString());
+        if (tbl_nhanvien_NLV.getValueAt(row, 10).equals("đang hoạt động")) {
+            rdo_dhd.setSelected(true);
+        } else {
+            rdo_nhd.setSelected(true);
+        }
+    }//GEN-LAST:event_tbl_nhanvien_NLVMouseClicked
+
+    private void txtMaQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaQRActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtMaQRActionPerformed
+
+    private void txtMaQRCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtMaQRCaretUpdate
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtMaQRCaretUpdate
+
+    private void btn_chonCaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonCaActionPerformed
+        // TODO add your handling code here:
+        new FormDanhSachCaLam().setVisible(true);
+    }//GEN-LAST:event_btn_chonCaActionPerformed
 
     private void txt_ngaySinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ngaySinhActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_ngaySinhActionPerformed
 
-    private void tbl_nhanvien_NLVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_nhanvien_NLVMouseClicked
+    private void btn_qr01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr01ActionPerformed
         // TODO add your handling code here:
+        initWebcam();
+        captureThreadSearch();
+        loadDataDangHd();
+    }//GEN-LAST:event_btn_qr01ActionPerformed
 
-    }//GEN-LAST:event_tbl_nhanvien_NLVMouseClicked
+    private void txt_searchMaQrCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_searchMaQrCaretUpdate
+        // TODO add your handling code here:
+        searchMaQr();
+    }//GEN-LAST:event_txt_searchMaQrCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_chonCa;
     private javax.swing.JButton btn_clear;
     private javax.swing.JButton btn_qr;
+    private javax.swing.JButton btn_qr01;
     private javax.swing.JButton btn_stop;
     private javax.swing.JButton btn_sua;
     private javax.swing.JButton btn_them;
@@ -958,7 +1129,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private javax.swing.JTextField txt_ma;
     private javax.swing.JPasswordField txt_mk;
     private javax.swing.JTextField txt_ngaySinh;
+    private javax.swing.JTextField txt_searchMaQr;
     private javax.swing.JTextField txt_ten;
-    private javax.swing.JTextField txt_timsdt;
     // End of variables declaration//GEN-END:variables
 }
