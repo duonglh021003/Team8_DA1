@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -53,6 +54,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private Thread captureThread;
     private boolean isCameraClosed = false;
     private String selectedTable = "";
+    private JFrame frame;
 
     /**
      * Creates new form Form
@@ -70,6 +72,10 @@ public class FormNhanVien extends javax.swing.JPanel {
     }
 
     public void initWebcam() {
+        
+        frame = new JFrame();
+        frame.setBounds(100, 100, 400, 300); // Đặt kích thước cửa sổ JFrame
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         webcam = Webcam.getWebcams().get(0);
         Dimension size = WebcamResolution.VGA.getSize();
@@ -77,8 +83,9 @@ public class FormNhanVien extends javax.swing.JPanel {
         webcamPanel = new WebcamPanel(webcam);
         webcamPanel.setPreferredSize(size);
         webcamPanel.setFPSDisplayed(true);
-        showPanel.add(webcamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 150));
-
+        
+        frame.getContentPane().add(webcamPanel);
+        frame.setVisible(true);
     }
 
     public void captureThread() {
@@ -87,7 +94,7 @@ public class FormNhanVien extends javax.swing.JPanel {
             @Override
 
             public void run() {
-                int count = 0;
+                
                 do {
                     try {
                         Thread.sleep(100);
@@ -100,7 +107,7 @@ public class FormNhanVien extends javax.swing.JPanel {
                     if (webcam.open()) {
                         if ((image = webcam.getImage()) == null) {
                             continue;
-                        }
+                       }
                     }
                     LuminanceSource source = new BufferedImageLuminanceSource(image);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -112,14 +119,16 @@ public class FormNhanVien extends javax.swing.JPanel {
                     if (result != null) {
                         txtMaQR.setText(result.getText());
                     }
-
                 } while (true);
             }
         };
         captureThread.setDaemon(true);
         captureThread.start();
+        
+     
+        
     }
-    
+
     public void captureThreadSearch() {
 
         captureThread = new Thread() {
@@ -152,7 +161,6 @@ public class FormNhanVien extends javax.swing.JPanel {
                         txt_searchMaQr.setText(result.getText());
                     }
 
-
                 } while (true);
             }
         };
@@ -164,6 +172,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         isCameraClosed = true;
         if (webcam != null && webcam.isOpen()) {
             webcam.close();
+            frame.setVisible(false);
         }
     }
 
@@ -338,8 +347,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private void searchMaQr() {
         List<NhanVien> list = nhanVienService.getAll();
         Integer maQr = Integer.valueOf(txt_searchMaQr.getText());
-        
-
+        String ma = txt_searchMaQr.getText().trim();
         model = (DefaultTableModel) tbl_nhanvien_lamviec.getModel();
         model.setRowCount(0);
         for (NhanVien p : list) {
@@ -356,6 +364,7 @@ public class FormNhanVien extends javax.swing.JPanel {
                     p.getMatKhau(),
                     p.getChucVu(),
                     p.getTrangThai() == 0 ? "đang hoạt động" : "ngừng hoạt động",});
+                break;
             }
         }
     }
@@ -417,7 +426,6 @@ public class FormNhanVien extends javax.swing.JPanel {
         txtMaQR = new javax.swing.JTextField();
         btn_stop = new javax.swing.JButton();
         btn_qr = new javax.swing.JButton();
-        showPanel = new javax.swing.JPanel();
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(1060, 631));
@@ -835,30 +843,29 @@ public class FormNhanVien extends javax.swing.JPanel {
             }
         });
 
-        showPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel15)
                         .addGap(54, 54, 54)
-                        .addComponent(showPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                                 .addComponent(btn_stop)
-                                .addGap(33, 33, 33)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btn_qr))
                             .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
+                        .addGap(252, 252, 252)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1035, Short.MAX_VALUE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1035, Short.MAX_VALUE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -870,17 +877,16 @@ public class FormNhanVien extends javax.swing.JPanel {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jLabel15)
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn_stop)
-                            .addComponent(btn_qr)))
-                    .addComponent(showPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                            .addComponent(btn_qr))))
+                .addGap(28, 28, 28)
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 269, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1119,7 +1125,6 @@ public class FormNhanVien extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdo_nam;
     private javax.swing.JRadioButton rdo_nhd;
     private javax.swing.JRadioButton rdo_nu;
-    private javax.swing.JPanel showPanel;
     private javax.swing.JTable tbl_nhanvien_NLV;
     private javax.swing.JTable tbl_nhanvien_lamviec;
     private javax.swing.JTextField txtMaQR;

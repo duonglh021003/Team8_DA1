@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -46,7 +47,8 @@ public class FormCheckIn extends javax.swing.JPanel {
     private WebcamPanel webcamPanel;
     private Thread captureThread;
     private boolean isCameraClosed = false;
-
+    private JFrame  frame;
+    
     /**
      * Creates new form FormCheckIn
      */
@@ -66,14 +68,16 @@ public class FormCheckIn extends javax.swing.JPanel {
         txt_phut.disable();
         txt_phut.setText(Integer.valueOf(minute).toString());
 
-//        Integer phutCD = 0;
-//        txt_phutCD.disable();
-//        txt_phutCD.setText(Integer.valueOf(phutCD).toString());
-        initWebcam();
-        captureThread();
+        
     }
 
+    
+    
     public void initWebcam() {
+        
+        frame = new JFrame();
+        frame.setBounds(100, 100, 400, 300); // Đặt kích thước cửa sổ JFrame
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         webcam = Webcam.getWebcams().get(0);
         Dimension size = WebcamResolution.VGA.getSize();
@@ -81,8 +85,9 @@ public class FormCheckIn extends javax.swing.JPanel {
         webcamPanel = new WebcamPanel(webcam);
         webcamPanel.setPreferredSize(size);
         webcamPanel.setFPSDisplayed(true);
-        showPanel.add(webcamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 150));
-
+        
+        frame.getContentPane().add(webcamPanel);
+        frame.setVisible(true);
     }
 
     public void captureThread() {
@@ -91,7 +96,7 @@ public class FormCheckIn extends javax.swing.JPanel {
             @Override
 
             public void run() {
-                int count = 0;
+                
                 do {
                     try {
                         Thread.sleep(100);
@@ -116,19 +121,14 @@ public class FormCheckIn extends javax.swing.JPanel {
                     if (result != null) {
                         txtMaQR.setText(result.getText());
                     }
-
-                    count++;
-                    if (count >= 100) {
-                        break;
-                    }
-                    if (isCameraClosed) {
-                        break;
-                    }
                 } while (true);
             }
         };
         captureThread.setDaemon(true);
         captureThread.start();
+        
+     
+        
     }
 
     public void loadData() {
@@ -175,18 +175,16 @@ public class FormCheckIn extends javax.swing.JPanel {
         isCameraClosed = true;
         if (webcam != null && webcam.isOpen()) {
             webcam.close();
+            frame.setVisible(false);
         }
     }
 
-//        private void clear() {
-//        txt_ma.setText("");
-//        txtMaQR.setText("");
-//        txt_baoCao.setText("");   
-//        txt_gio.setText("");
-//        txt_moTa.setText("");
-//        txt_ngayTao.setText("");
-//        txt_phut.setText("");
-//    }
+        private void clear() {
+        txt_ma.setText("");
+        txtMaQR.setText("");
+        txt_baoCao.setText("");   
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -498,7 +496,7 @@ public class FormCheckIn extends javax.swing.JPanel {
 
     private void btn_qr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr1ActionPerformed
         // TODO add your handling code here:
-        
+        clear();
     }//GEN-LAST:event_btn_qr1ActionPerformed
 
     private void tbl_checkInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_checkInMouseClicked
@@ -521,9 +519,10 @@ public class FormCheckIn extends javax.swing.JPanel {
 
     private void btn_qrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qrActionPerformed
         // TODO add your handling code here:
-        initWebcam();
         captureThread();
-
+        initWebcam();
+        
+        
     }//GEN-LAST:event_btn_qrActionPerformed
 
     private void pan_dsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pan_dsMouseClicked
