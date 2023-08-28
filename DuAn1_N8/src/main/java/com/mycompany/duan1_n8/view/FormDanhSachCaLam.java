@@ -348,7 +348,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         btn_them2 = new javax.swing.JButton();
-        btn_sua = new javax.swing.JButton();
         btn_qr1 = new javax.swing.JButton();
         btn_thoat = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
@@ -419,14 +418,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
             }
         });
 
-        btn_sua.setBackground(new java.awt.Color(153, 255, 204));
-        btn_sua.setText("sửa");
-        btn_sua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_suaActionPerformed(evt);
-            }
-        });
-
         btn_qr1.setBackground(new java.awt.Color(153, 255, 204));
         btn_qr1.setText("làm mới");
         btn_qr1.addActionListener(new java.awt.event.ActionListener() {
@@ -450,7 +441,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_sua, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_them2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                     .addComponent(btn_qr1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_thoat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -461,8 +451,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(btn_them2)
-                .addGap(18, 18, 18)
-                .addComponent(btn_sua)
                 .addGap(18, 18, 18)
                 .addComponent(btn_qr1)
                 .addGap(18, 18, 18)
@@ -783,10 +771,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
         loadData();
     }//GEN-LAST:event_btn_them2ActionPerformed
 
-    private void btn_suaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_suaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_suaActionPerformed
-
     private void btn_qr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr1ActionPerformed
         // TODO add your handling code here:
         clear();
@@ -915,7 +899,6 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
     private javax.swing.JButton btn_qr01;
     private javax.swing.JButton btn_qr1;
     private javax.swing.JButton btn_stop;
-    private javax.swing.JButton btn_sua;
     private javax.swing.JButton btn_them1;
     private javax.swing.JButton btn_them2;
     private javax.swing.JButton btn_thoat;

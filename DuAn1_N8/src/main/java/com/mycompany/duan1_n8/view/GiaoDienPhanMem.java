@@ -265,7 +265,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\BXT\\Desktop\\Team8\\DuAn1_N8\\src\\main\\java\\com\\mycompany\\duan1_n8\\Images\\bar-chart.png")); // NOI18N
-        jLabel9.setText("Thống kê");
+        jLabel9.setText("Check in");
 
         javax.swing.GroupLayout btn_thongkeLayout = new javax.swing.GroupLayout(btn_thongke);
         btn_thongke.setLayout(btn_thongkeLayout);
@@ -436,9 +436,9 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
 
     private void btn_thongkeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_thongkeMousePressed
         // TODO add your handling code here:
-//        setColor(btn_thongke);
-//        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
-//        setpanal(new FormThongKe());
+        setColor(btn_thongke);
+        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_dangxuat});
+        setpanal(new FormCheckIn());
     }//GEN-LAST:event_btn_thongkeMousePressed
 
     private void btn_dangxuatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dangxuatMousePressed

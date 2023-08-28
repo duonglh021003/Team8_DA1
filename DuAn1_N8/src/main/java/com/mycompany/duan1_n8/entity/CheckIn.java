@@ -55,9 +55,6 @@ public class CheckIn {
     @Column(name = "PhutCoDinh")
     private Integer phutCoDinh;
     
-    @Column(name = "TrangThai")
-    private Integer trangThai;
-    
     @Column(name = "BaoCao")
     private String baoCao;
     
