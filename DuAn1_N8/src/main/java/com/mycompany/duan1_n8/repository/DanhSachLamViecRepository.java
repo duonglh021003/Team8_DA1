@@ -43,4 +43,20 @@ public class DanhSachLamViecRepository {
         return false;
     }
     
+    public Boolean update(DanhSachLamViec danhSachLamViec) {
+        Transaction transaction = null;
+        boolean check = false;
+        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(danhSachLamViec);
+            transaction.commit();
+            check = true;
+             
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            transaction.rollback();
+        }
+        return check;
+    }
+    
 }
