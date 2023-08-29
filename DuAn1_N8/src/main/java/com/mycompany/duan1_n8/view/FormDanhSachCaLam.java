@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,6 +62,7 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
     private WebcamPanel webcamPanel;
     private Thread captureThread;
     private boolean isCameraClosed = false;
+    private JFrame frame;
 
     /**
      * Creates new form FormDanhSachCaLam
@@ -153,14 +155,19 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
 
     public void initWebcam() {
 
+        frame = new JFrame();
+        frame.setBounds(100, 100, 400, 300); // Đặt kích thước cửa sổ JFrame
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         webcam = Webcam.getWebcams().get(0);
         Dimension size = WebcamResolution.VGA.getSize();
         webcam.setViewSize(size);
         webcamPanel = new WebcamPanel(webcam);
         webcamPanel.setPreferredSize(size);
         webcamPanel.setFPSDisplayed(true);
-        showPanel.add(webcamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 150));
 
+        frame.getContentPane().add(webcamPanel);
+        frame.setVisible(true);
     }
 
     public void captureThread() {
@@ -856,7 +863,7 @@ public class FormDanhSachCaLam extends javax.swing.JFrame {
         // TODO add your handling code here:
         initWebcam();
         captureThreadSearch();
-        
+
     }//GEN-LAST:event_btn_qr01ActionPerformed
 
     /**

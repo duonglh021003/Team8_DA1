@@ -162,6 +162,12 @@ public class CheckIn {
         
         return statusEnum;
     }
+
+    @Override
+    public String toString() {
+        return  String.valueOf(getStatus()) ;
+    }
+    
     
     
 }

@@ -27,6 +27,9 @@ import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
@@ -47,8 +50,8 @@ public class FormCheckIn extends javax.swing.JPanel {
     private WebcamPanel webcamPanel;
     private Thread captureThread;
     private boolean isCameraClosed = false;
-    private JFrame  frame;
-    
+    private JFrame frame;
+
     /**
      * Creates new form FormCheckIn
      */
@@ -68,13 +71,10 @@ public class FormCheckIn extends javax.swing.JPanel {
         txt_phut.disable();
         txt_phut.setText(Integer.valueOf(minute).toString());
 
-        
     }
 
-    
-    
     public void initWebcam() {
-        
+
         frame = new JFrame();
         frame.setBounds(100, 100, 400, 300); // Đặt kích thước cửa sổ JFrame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +85,7 @@ public class FormCheckIn extends javax.swing.JPanel {
         webcamPanel = new WebcamPanel(webcam);
         webcamPanel.setPreferredSize(size);
         webcamPanel.setFPSDisplayed(true);
-        
+
         frame.getContentPane().add(webcamPanel);
         frame.setVisible(true);
     }
@@ -96,7 +96,7 @@ public class FormCheckIn extends javax.swing.JPanel {
             @Override
 
             public void run() {
-                
+
                 do {
                     try {
                         Thread.sleep(100);
@@ -109,7 +109,7 @@ public class FormCheckIn extends javax.swing.JPanel {
                     if (webcam.open()) {
                         if ((image = webcam.getImage()) == null) {
                             continue;
-                       }
+                        }
                     }
                     LuminanceSource source = new BufferedImageLuminanceSource(image);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -126,24 +126,63 @@ public class FormCheckIn extends javax.swing.JPanel {
         };
         captureThread.setDaemon(true);
         captureThread.start();
-        
-     
-        
+
+    }
+
+    public void captureThreadSearch() {
+
+        captureThread = new Thread() {
+            @Override
+
+            public void run() {
+                int count = 0;
+                do {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+
+                        ex.printStackTrace();
+                    }
+                    Result result = null;
+                    BufferedImage image = null;
+                    if (webcam.open()) {
+                        if ((image = webcam.getImage()) == null) {
+                            continue;
+                        }
+                    }
+                    LuminanceSource source = new BufferedImageLuminanceSource(image);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                    try {
+                        result = new MultiFormatReader().decode(bitmap);
+                    } catch (NotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (result != null) {
+                        txt_searchMaQr.setText(result.getText());
+                    }
+
+                } while (true);
+            }
+        };
+        captureThread.setDaemon(true);
+        captureThread.start();
     }
 
     public void loadData() {
         List<CheckIn> listCheckIn = checkInService.getAll();
         model = (DefaultTableModel) tbl_checkIn.getModel();
         model.setRowCount(0);
+        Collections.sort(listCheckIn, Comparator.comparingInt(CheckIn::getId).reversed());
+
         for (CheckIn p : listCheckIn) {
+
             model.addRow(new Object[]{
                 p.getMa(),
                 p.getNgayTao(),
                 p.getGioVao() + ":" + p.getPhutVao(),
                 p.getBaoCao(),
                 p.getNhanVien().getMaQr(),
-                p.getStatus()
-            });
+                p.getStatus(),});
         }
     }
 
@@ -179,12 +218,118 @@ public class FormCheckIn extends javax.swing.JPanel {
         }
     }
 
-        private void clear() {
+    private void clear() {
         txt_ma.setText("");
         txtMaQR.setText("");
-        txt_baoCao.setText("");   
-        
+        txt_baoCao.setText("");
+
     }
+
+    private void searchMaQr() {
+        List<CheckIn> list = checkInService.getAll();
+
+        Integer maQr = Integer.valueOf(txt_searchMaQr2.getText());
+
+        model = (DefaultTableModel) tbl_checkIn.getModel();
+        model.setRowCount(0);
+
+        for (CheckIn p : list) {
+            if (p.getNhanVien().getMaQr().equals(maQr)) {
+                model.addRow(new Object[]{
+                    p.getMa(),
+                    p.getNgayTao(),
+                    p.getGioVao() + ":" + p.getPhutVao(),
+                    p.getBaoCao(),
+                    p.getNhanVien().getMaQr(),
+                    p.getStatus(),});
+
+            }
+        }
+    }
+    
+
+    private void locTrangThai() {
+        List<CheckIn> list = new ArrayList<>();
+        String cbo = cbo_trangThai.getSelectedItem().toString();
+        for (CheckIn p : checkInService.getAll()) {
+            if (String.valueOf(p.getStatus()).equals(cbo)) {
+                list.add(p);
+            }
+        }
+        
+        model = (DefaultTableModel) tbl_checkIn.getModel();
+            model.setRowCount(0);
+            for (CheckIn p : list) {
+                System.out.println("k   " + list);
+                model.addRow(new Object[]{
+                    p.getMa(),
+                    p.getNgayTao(),
+                    p.getGioVao() + ":" + p.getPhutVao(),
+                    p.getBaoCao(),
+                    p.getNhanVien().getMaQr(),
+                    p.getStatus(),});
+            }
+       
+    }
+
+    private void searchTrangThai() {
+        if (cbo_trangThai.getSelectedItem().equals("Chon Trang Thai")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Khong Chon Trang Thai");
+            loadData();
+        } else if (cbo_trangThai.getSelectedItem().equals("PRESENT")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai PRESENT");
+            locTrangThai();
+        } else if (cbo_trangThai.getSelectedItem().equals("ABSENT")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai ABSENT");
+            locTrangThai();
+        } else if (cbo_trangThai.getSelectedItem().equals("LATE1")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE1");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE2")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE2");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE3")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE3");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE4")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE4");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE5")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE5");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE6")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE6");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE7")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE7");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE8")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE8");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE9")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE9");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE10")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE10");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE11")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE11");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE12")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE12");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE13")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE13");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE14")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE14");
+            locTrangThai();
+        }else if (cbo_trangThai.getSelectedItem().equals("LATE15")) {
+            JOptionPane.showMessageDialog(this, "Ban Da Chon Trang Thai LATE15");
+            locTrangThai();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -218,7 +363,12 @@ public class FormCheckIn extends javax.swing.JPanel {
         btn_qr = new javax.swing.JButton();
         btn_stop = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
-        showPanel = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        txt_searchMaQr2 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        btn_qr01 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cbo_trangThai = new javax.swing.JComboBox<>();
 
         pan_ds.setBackground(new java.awt.Color(255, 255, 255));
         pan_ds.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -244,7 +394,7 @@ public class FormCheckIn extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btn_them1.setBackground(new java.awt.Color(153, 255, 204));
-        btn_them1.setText("Thêm ca");
+        btn_them1.setText("check in");
         btn_them1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_them1ActionPerformed(evt);
@@ -288,7 +438,7 @@ public class FormCheckIn extends javax.swing.JPanel {
                 .addComponent(btn_qr1)
                 .addGap(18, 18, 18)
                 .addComponent(btn_checkOut)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jLabel13.setText("mã");
@@ -327,9 +477,6 @@ public class FormCheckIn extends javax.swing.JPanel {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
@@ -346,7 +493,10 @@ public class FormCheckIn extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(txt_ma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 92, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         jTabbedPane4.setBackground(new java.awt.Color(255, 255, 255));
@@ -386,13 +536,12 @@ public class FormCheckIn extends javax.swing.JPanel {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("check in", jPanel12);
 
-        txtMaQR.setEditable(false);
         txtMaQR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaQRActionPerformed(evt);
@@ -415,58 +564,133 @@ public class FormCheckIn extends javax.swing.JPanel {
 
         jLabel24.setText("mã QR");
 
-        showPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+
+        txt_searchMaQr2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txt_searchMaQr2CaretUpdate(evt);
+            }
+        });
+        txt_searchMaQr2.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txt_searchMaQr2InputMethodTextChanged(evt);
+            }
+        });
+        txt_searchMaQr2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_searchMaQr2KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchMaQr2KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_searchMaQr2KeyTyped(evt);
+            }
+        });
+
+        jLabel14.setText("Tìm theo mã qr");
+
+        btn_qr01.setText("quét QR");
+        btn_qr01.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_qr01ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("trạng thái");
+
+        cbo_trangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chon Trang Thai", "ABSENT", "PRESENT", "LATE1", "LATE2", "LATE3", "LATE4", "LATE5", "LATE6", "LATE7", "LATE8", "LATE9", "LATE10", "LATE11", "LATE12", "LATE13", "LATE14", "LATE15", " " }));
+        cbo_trangThai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_trangThaiActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btn_qr01))
+                    .addComponent(txt_searchMaQr2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(110, 110, 110)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(cbo_trangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(95, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_searchMaQr2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_trangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_qr01)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout pan_dsLayout = new javax.swing.GroupLayout(pan_ds);
         pan_ds.setLayout(pan_dsLayout);
         pan_dsLayout.setHorizontalGroup(
             pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pan_dsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1036, Short.MAX_VALUE))
-                .addContainerGap(28, Short.MAX_VALUE))
-            .addGroup(pan_dsLayout.createSequentialGroup()
                 .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(pan_dsLayout.createSequentialGroup()
+                            .addGap(25, 25, 25)
+                            .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(pan_dsLayout.createSequentialGroup()
+                                    .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel24))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(pan_dsLayout.createSequentialGroup()
+                                    .addComponent(btn_stop)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn_qr)
+                                    .addGap(66, 66, 66)))
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(12, 12, 12))
+                        .addGroup(pan_dsLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pan_dsLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(showPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(226, 226, 226)
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pan_dsLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_stop)
-                        .addGap(49, 49, 49)))
-                .addComponent(btn_qr)
-                .addGap(558, 558, 558))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pan_dsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(539, 539, 539))
+                        .addGap(15, 15, 15)
+                        .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         pan_dsLayout.setVerticalGroup(
             pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pan_dsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pan_dsLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jLabel24)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMaQR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(pan_dsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn_stop)
                             .addComponent(btn_qr)))
-                    .addGroup(pan_dsLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(showPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 49, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -477,7 +701,7 @@ public class FormCheckIn extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pan_ds, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+            .addComponent(pan_ds, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -497,6 +721,7 @@ public class FormCheckIn extends javax.swing.JPanel {
     private void btn_qr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr1ActionPerformed
         // TODO add your handling code here:
         clear();
+        loadData();
     }//GEN-LAST:event_btn_qr1ActionPerformed
 
     private void tbl_checkInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_checkInMouseClicked
@@ -521,33 +746,72 @@ public class FormCheckIn extends javax.swing.JPanel {
         // TODO add your handling code here:
         captureThread();
         initWebcam();
-        
-        
+
+
     }//GEN-LAST:event_btn_qrActionPerformed
 
     private void pan_dsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pan_dsMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_pan_dsMouseClicked
 
+    private void txt_searchMaQr2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_searchMaQr2CaretUpdate
+        // TODO add your handling code here:
+        searchMaQr();
+    }//GEN-LAST:event_txt_searchMaQr2CaretUpdate
+
+    private void txt_searchMaQr2InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_searchMaQr2InputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchMaQr2InputMethodTextChanged
+
+    private void txt_searchMaQr2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQr2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchMaQr2KeyPressed
+
+    private void txt_searchMaQr2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQr2KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchMaQr2KeyReleased
+
+    private void txt_searchMaQr2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchMaQr2KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchMaQr2KeyTyped
+
+    private void btn_qr01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_qr01ActionPerformed
+        // TODO add your handling code here:
+        initWebcam();
+        captureThreadSearch();
+
+    }//GEN-LAST:event_btn_qr01ActionPerformed
+
+    private void cbo_trangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trangThaiActionPerformed
+        // TODO add your handling code here:
+        searchTrangThai();
+    }//GEN-LAST:event_cbo_trangThaiActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_checkOut;
     private javax.swing.JButton btn_qr;
+    private javax.swing.JButton btn_qr01;
     private javax.swing.JButton btn_qr1;
     private javax.swing.JButton btn_stop;
     private javax.swing.JButton btn_them1;
+    private javax.swing.JComboBox<String> cbo_trangThai;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JPanel pan_ds;
-    private javax.swing.JPanel showPanel;
     private javax.swing.JTable tbl_checkIn;
     private javax.swing.JTextField txtMaQR;
     private javax.swing.JTextField txt_baoCao;
@@ -556,5 +820,8 @@ public class FormCheckIn extends javax.swing.JPanel {
     private javax.swing.JLabel txt_moTa;
     private javax.swing.JTextField txt_ngayTao;
     private javax.swing.JTextField txt_phut;
+    private javax.swing.JTextField txt_searchMaQr;
+    private javax.swing.JTextField txt_searchMaQr1;
+    private javax.swing.JTextField txt_searchMaQr2;
     // End of variables declaration//GEN-END:variables
 }
