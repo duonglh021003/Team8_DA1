@@ -5,6 +5,7 @@
 package com.mycompany.duan1_n8.utilities;
 
 import com.mycompany.duan1_n8.entity.CheckIn;
+import com.mycompany.duan1_n8.entity.CheckOut;
 import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
@@ -56,6 +57,7 @@ public class HibernateUtil {
         conf.addAnnotatedClass(NhanVien.class);
         conf.addAnnotatedClass(DanhSachLamViec.class);
         conf.addAnnotatedClass(CheckIn.class);
+        conf.addAnnotatedClass(CheckOut.class);
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);
