@@ -422,9 +422,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         setColor(btn_nhanvien);
         resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_khuyenmai, btn_khachhang, btn_thongke, btn_dangxuat});
         setpanal(new FormNhanVien());
-        setColor(btn_nhanvien);
-        resetColor(new JPanel[]{btn_banhang, btn_sanpham, btn_hoadon, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
-        setpanal(new FormNhanVien());
+        
     }//GEN-LAST:event_btn_nhanvienMousePressed
 
     private void btn_khachhangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_khachhangMousePressed
