@@ -8,14 +8,15 @@ import com.mycompany.duan1_n8.entity.CheckIn;
 import com.mycompany.duan1_n8.repository.CheckInRepository;
 import com.mycompany.duan1_n8.repository.DanhSachLamViecRepository;
 import com.mycompany.duan1_n8.service.CheckInService;
+import java.sql.Date;
 import java.util.List;
 
 /**
  *
  * @author BXT
  */
-public class CheckInServiceImpl implements CheckInService{
-    
+public class CheckInServiceImpl implements CheckInService {
+
     private final CheckInRepository checkInRepository = new CheckInRepository();
 
     @Override
@@ -31,5 +32,10 @@ public class CheckInServiceImpl implements CheckInService{
             return "Thêm Thất Bại";
         }
     }
-    
+
+    @Override
+    public List<CheckIn> locNgay(Date ngayTao) {
+        return checkInRepository.searchNgay(ngayTao);
+    }
+
 }

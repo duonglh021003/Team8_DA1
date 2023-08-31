@@ -31,5 +31,14 @@ public class DanhSachLamViecServiceImpl implements DanhSachLamViecService{
             return "Thêm Thất Bại";
         }
     }
+
+    @Override
+    public String Update(DanhSachLamViec danhSachLamViec) {
+        if (danhSachLamViecRepository.update(danhSachLamViec)) {
+            return "sửa Thành Công";
+        } else {
+            return "sửa Thất Bại";
+        }
+    }
     
 }

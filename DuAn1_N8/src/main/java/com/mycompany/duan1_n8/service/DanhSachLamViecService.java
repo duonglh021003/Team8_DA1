@@ -19,4 +19,5 @@ public interface DanhSachLamViecService {
     
     String add(DanhSachLamViec danhSachLamViec);
     
+    String Update(DanhSachLamViec danhSachLamViec);
 }
