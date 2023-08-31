@@ -260,7 +260,6 @@ public class FormCheckIn extends javax.swing.JPanel {
         model = (DefaultTableModel) tbl_checkIn.getModel();
             model.setRowCount(0);
             for (CheckIn p : list) {
-                System.out.println("k   " + list);
                 model.addRow(new Object[]{
                     p.getMa(),
                     p.getNgayTao(),
