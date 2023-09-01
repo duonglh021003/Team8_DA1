@@ -7,18 +7,34 @@ package com.mycompany.duan1_n8.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 
 /**
  *
  * @author BuiDucMinh
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+@Entity
+@Table(name = "HoaDon")
 public class HoaDon {
-     @Id
+
+    @Id
     @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idHoaDon;
@@ -68,4 +84,6 @@ public class HoaDon {
             return "Da Huy";
         }
     }
+    
+    
 }

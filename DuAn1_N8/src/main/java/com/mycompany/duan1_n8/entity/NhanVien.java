@@ -5,8 +5,8 @@
 package com.mycompany.duan1_n8.entity;
 
 
-import java.time.LocalDate;
-import java.util.Date;
+
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -70,9 +70,8 @@ public class NhanVien {
     @Column(name = "TrangThai")
     private Integer trangThai;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "IdChucVu", referencedColumnName = "Id")
     private ChucVu chucVu;
-
   
 }
