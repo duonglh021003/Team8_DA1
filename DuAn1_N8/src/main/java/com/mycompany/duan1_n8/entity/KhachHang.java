@@ -4,10 +4,14 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import javax.persistence.Table;
+
 /**
  *
  * @author BuiDucMinh
  */
+
+@Table()
 public class KhachHang {
     
 }
