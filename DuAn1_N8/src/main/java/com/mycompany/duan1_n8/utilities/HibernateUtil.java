@@ -14,7 +14,6 @@ import com.mycompany.duan1_n8.entity.Lop;
 import com.mycompany.duan1_n8.entity.MauSac;
 import com.mycompany.duan1_n8.entity.NSX;
 import com.mycompany.duan1_n8.entity.NhanVien;
-import com.mycompany.duan1_n8.entity.PhieuGiamGia;
 import com.mycompany.duan1_n8.entity.SanPham;
 import com.mycompany.duan1_n8.entity.ThietKe;
 import com.mycompany.duan1_n8.entity.Thu2;
@@ -46,7 +45,7 @@ public class HibernateUtil {
         properties.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
         properties.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=Team8_DuAn1");
         properties.put(Environment.USER, "sa");
-        properties.put(Environment.PASS, "123456");
+        properties.put(Environment.PASS, "Minh9032003");
         properties.put(Environment.SHOW_SQL, "true");
 
         conf.setProperties(properties);
