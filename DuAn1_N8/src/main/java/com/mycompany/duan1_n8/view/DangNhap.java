@@ -33,6 +33,9 @@ public class DangNhap extends javax.swing.JPanel {
         btn_dangnhap.addActionListener(event);
     }
     
+    private void login(){
+        
+    }
     
 //    private NhanVien getFormData() {
 ////        String User = this.txt_tk.getText().trim();
