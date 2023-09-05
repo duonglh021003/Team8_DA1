@@ -275,9 +275,6 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
             </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\close.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
           </Properties>
           <Events>
@@ -289,9 +286,6 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
             </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\close.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="X&#xf3;a t&#x1ea5;t c&#x1ea3;"/>
           </Properties>
           <Events>
@@ -302,9 +296,6 @@
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\add.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Thay &#x110;&#x1ed5;i SL"/>
           </Properties>
@@ -763,9 +754,6 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
             </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\floppy-disk.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="T&#x1ea1;o"/>
           </Properties>
           <Events>
@@ -854,9 +842,6 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
             </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\bill.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="H&#x1ee7;y h&#xf3;a &#x111;&#x1a1;n"/>
           </Properties>
           <Events>
@@ -867,9 +852,6 @@
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="99" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\exchange.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i"/>
           </Properties>
@@ -884,9 +866,6 @@
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="1"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\BXT\Desktop\Team8\DuAn1_N8\src\main\java\com\mycompany\duan1_n8\Images\wallet.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Thanh to&#xe1;n"/>
           </Properties>

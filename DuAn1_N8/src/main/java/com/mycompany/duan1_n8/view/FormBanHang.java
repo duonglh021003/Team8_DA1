@@ -4,15 +4,35 @@
  */
 package com.mycompany.duan1_n8.view;
 
+import com.mycompany.duan1_n8.entity.HoaDon;
+import com.mycompany.duan1_n8.service.BanHangService;
+import com.mycompany.duan1_n8.service.Impl.BanHangServiceImpl;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author BuiDucMinh
  */
 public class FormBanHang extends javax.swing.JPanel {
 
+    private int indexHoaDon = 0;
+    private final BanHangService banHangService;
+
     public FormBanHang() {
         initComponents();
-        
+        banHangService = new BanHangServiceImpl();
+    }
+
+    // Huy Hoa Don
+    private void huyHoaDon() {
+        indexHoaDon = tbl_hoadon.getSelectedRow();
+        Long idHoaDon1 = Long.parseLong(tbl_hoadon.getValueAt(indexHoaDon, 0).toString());
+        HoaDon addHoaDon = HoaDon.builder()
+                .idHoaDon(idHoaDon1)
+                .build();
+        banHangService.huyHoaDon(addHoaDon);
+        JOptionPane.showMessageDialog(this, "Huy Hoa Don Thanh Cong");
+
     }
 
     /**
