@@ -91,7 +91,7 @@ public class FormCheckIn extends javax.swing.JPanel {
     }
 
     public void captureThread() {
-
+        System.out.println("aaaaaaaaaaa");
         captureThread = new Thread() {
             @Override
 
