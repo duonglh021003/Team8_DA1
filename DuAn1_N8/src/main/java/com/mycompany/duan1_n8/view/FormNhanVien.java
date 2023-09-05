@@ -347,7 +347,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private void searchMaQr() {
         List<NhanVien> list = nhanVienService.getAll();
         Integer maQr = Integer.valueOf(txt_searchMaQr.getText());
-        String ma = txt_searchMaQr.getText().trim();
+        
         model = (DefaultTableModel) tbl_nhanvien_lamviec.getModel();
         model.setRowCount(0);
         for (NhanVien p : list) {
@@ -364,9 +364,10 @@ public class FormNhanVien extends javax.swing.JPanel {
                     p.getMatKhau(),
                     p.getChucVu(),
                     p.getTrangThai() == 0 ? "đang hoạt động" : "ngừng hoạt động",});
-                break;
+                
             }
         }
+       
     }
 
     /**
@@ -931,6 +932,7 @@ public class FormNhanVien extends javax.swing.JPanel {
 
     private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
         clear();
+        loadDataDangHd();
     }//GEN-LAST:event_btn_clearActionPerformed
 
     private void btn_suaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_suaActionPerformed
