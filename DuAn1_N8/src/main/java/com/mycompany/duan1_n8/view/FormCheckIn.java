@@ -91,7 +91,6 @@ public class FormCheckIn extends javax.swing.JPanel {
     }
 
     public void captureThread() {
-        System.out.println("aaaaaaaaaaa");
         captureThread = new Thread() {
             @Override
 
@@ -371,7 +370,7 @@ public class FormCheckIn extends javax.swing.JPanel {
 
         pan_ds.setBackground(new java.awt.Color(255, 255, 255));
         pan_ds.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        pan_ds.setPreferredSize(new java.awt.Dimension(1060, 631));
+        pan_ds.setPreferredSize(new java.awt.Dimension(1110, 680));
         pan_ds.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pan_dsMouseClicked(evt);
@@ -689,7 +688,7 @@ public class FormCheckIn extends javax.swing.JPanel {
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -700,7 +699,7 @@ public class FormCheckIn extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pan_ds, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
+            .addComponent(pan_ds, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -804,8 +803,6 @@ public class FormCheckIn extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane5;
@@ -819,8 +816,6 @@ public class FormCheckIn extends javax.swing.JPanel {
     private javax.swing.JLabel txt_moTa;
     private javax.swing.JTextField txt_ngayTao;
     private javax.swing.JTextField txt_phut;
-    private javax.swing.JTextField txt_searchMaQr;
-    private javax.swing.JTextField txt_searchMaQr1;
     private javax.swing.JTextField txt_searchMaQr2;
     // End of variables declaration//GEN-END:variables
 }

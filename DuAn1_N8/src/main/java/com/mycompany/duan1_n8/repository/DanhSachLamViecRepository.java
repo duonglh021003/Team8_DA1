@@ -4,7 +4,6 @@
  */
 package com.mycompany.duan1_n8.repository;
 
-
 import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.entity.NhanVien;
@@ -41,22 +40,6 @@ public class DanhSachLamViecRepository {
             System.err.println(e.getMessage());
         }
         return false;
-    }
-    
-    public Boolean update(DanhSachLamViec danhSachLamViec) {
-        Transaction transaction = null;
-        boolean check = false;
-        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
-            transaction = session.beginTransaction();
-            session.saveOrUpdate(danhSachLamViec);
-            transaction.commit();
-            check = true;
-             
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            transaction.rollback();
-        }
-        return check;
     }
     
 }

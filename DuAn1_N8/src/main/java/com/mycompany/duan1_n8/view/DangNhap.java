@@ -45,6 +45,8 @@ public class DangNhap extends javax.swing.JPanel {
 ////        NhanVien nv = new NhanVien(User,Pass);
 //        return nv;
 //    }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.

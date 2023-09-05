@@ -6,7 +6,6 @@ package com.mycompany.duan1_n8.service.Impl;
 
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.repository.DanhSachLamViecRepository;
-import com.mycompany.duan1_n8.repository.NhanVienRepository;
 import com.mycompany.duan1_n8.service.DanhSachLamViecService;
 import java.util.List;
 
@@ -29,15 +28,6 @@ public class DanhSachLamViecServiceImpl implements DanhSachLamViecService{
             return "Thêm Thành Công";
         } else {
             return "Thêm Thất Bại";
-        }
-    }
-
-    @Override
-    public String Update(DanhSachLamViec danhSachLamViec) {
-        if (danhSachLamViecRepository.update(danhSachLamViec)) {
-            return "sửa Thành Công";
-        } else {
-            return "sửa Thất Bại";
         }
     }
     
