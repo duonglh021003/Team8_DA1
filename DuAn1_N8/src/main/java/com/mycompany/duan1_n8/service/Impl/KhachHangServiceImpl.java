@@ -8,6 +8,7 @@ import com.mycompany.duan1_n8.entity.KhachHang;
 import com.mycompany.duan1_n8.repository.KhachHangRepository;
 import com.mycompany.duan1_n8.service.KhachHangService;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 
 /**
  *

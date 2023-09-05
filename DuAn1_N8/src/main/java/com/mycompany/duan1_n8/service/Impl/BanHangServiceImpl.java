@@ -12,6 +12,10 @@ import com.mycompany.duan1_n8.entity.KhachHang;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import com.mycompany.duan1_n8.entity.PhieuGiamGia;
 import com.mycompany.duan1_n8.repository.BanHangRepository;
+import com.mycompany.duan1_n8.repository.ChiTietSPRepository;
+import com.mycompany.duan1_n8.repository.HoaDonChiTietRepository;
+import com.mycompany.duan1_n8.repository.HoaDonRepository;
+import com.mycompany.duan1_n8.repository.KhachHangRepository;
 import com.mycompany.duan1_n8.repository.NhanVienRepository;
 import com.mycompany.duan1_n8.repository.PhieuGiamGiaRepository;
 import com.mycompany.duan1_n8.service.BanHangService;
@@ -29,27 +33,62 @@ import org.modelmapper.ModelMapper;
 public class BanHangServiceImpl implements BanHangService {
 
     private final ModelMapper modelMapper;
-    private final PhieuGiamGiaRepository giaRepository;
+    private final ChiTietSPRepository chiTietSPRepository;
+    private final HoaDonRepository hoaDonRepository;
+    private final HoaDonChiTietRepository chiTietRepository;
+    private final NhanVienRepository nhanVienRepository;
+    private final KhachHangRepository khachHangRepository;
     private final BanHangRepository banHangRepository;
+    private final PhieuGiamGiaRepository giaRepository;
     private final Date dateNow = new Date();
     private final Random random;
     private String i = null;
 
     public BanHangServiceImpl() {
         this.modelMapper = new ModelMapper();
-        this.giaRepository = new PhieuGiamGiaRepository();
+        this.chiTietSPRepository = new ChiTietSPRepository();
+        this.hoaDonRepository = new HoaDonRepository();
+        this.chiTietRepository = new HoaDonChiTietRepository();
+        this.nhanVienRepository = new NhanVienRepository();
+        this.khachHangRepository = new KhachHangRepository();
         this.banHangRepository = new BanHangRepository();
+        this.giaRepository = new PhieuGiamGiaRepository();
         this.random = new Random();
     }
 
     @Override
     public List<HoaDon> getAllHD() {
-        return null;
+        List<HoaDon> listAllHD = new ArrayList<>();
+        for (HoaDon hoaDon : hoaDonRepository.getAllHD()) {
+            if (hoaDon.getTrangThai() == 0) {
+                listAllHD.add(new HoaDon(
+                        hoaDon.getIdHoaDon(), 
+                        hoaDon.getMaHoaDon(), 
+                        hoaDon.getNgayTao(),
+                        hoaDon.getMoTa(), 
+                        hoaDon.getTongTienHoaDon(),
+                        hoaDon.getThanhTien(),
+                        hoaDon.getTienKhachDua(),
+                        hoaDon.getTienThua(),
+                        hoaDon.getTrangThai(), 
+                        hoaDon.getKhachHang(), 
+                        hoaDon.getNhanVien(), 
+                        hoaDon.getPhieuGiamGia()));
+            }
+        }
+        return listAllHD;
     }
 
     @Override
     public boolean addHoaDon(HoaDon hoaDon, String maNhanVien, String maKhachHang) {
-        return true;
+        NhanVien nhanVienIndex = this.nhanVienRepository.getOne(maNhanVien);
+        KhachHang khachHangIndex = this.khachHangRepository.getOne(maKhachHang);
+        
+        System.out.println(khachHangIndex);
+        i = "HD" + random.nextInt();
+        HoaDon taoHoaDon = new HoaDon(null, i, dateNow, null, null,
+                null, null, null, 0, khachHangIndex, nhanVienIndex, null);
+        return this.hoaDonRepository.taoHoaDon(taoHoaDon);
     }
 
     @Override
@@ -60,12 +99,24 @@ public class BanHangServiceImpl implements BanHangService {
 
     @Override
     public List<ChiTietSP> getAllSanPhamBan() {
-        return null;
+        List<ChiTietSP> listSanPham = new ArrayList<>();
+        for (ChiTietSP chiTietSP : chiTietSPRepository.getAllCTSP()) {
+            if (chiTietSP.getTrangThai() == 1) {
+                listSanPham.add(new ChiTietSP(chiTietSP.getMaQr(), chiTietSP.getNgaySanXuat(), chiTietSP.getHanSuDung(),
+                        chiTietSP.getGia(), chiTietSP.getMoTa(), chiTietSP.getSoLuong(), chiTietSP.getTrangThai(),
+                        chiTietSP.getThietKe(), chiTietSP.getDoiTuongSuDung(), chiTietSP.getNsx(),
+                        chiTietSP.getMauSac(), chiTietSP.getSanPham(), chiTietSP.getLop()));
+            }
+        }
+        return listSanPham;
     }
 
     @Override
     public ChiTietSP getOneSP(Long idSanPham) {
-        return null;
+        ChiTietSP ctsp = chiTietSPRepository.getOne(idSanPham);
+        return new ChiTietSP(ctsp.getMaQr(), ctsp.getNgaySanXuat(), ctsp.getHanSuDung(), ctsp.getGia(),
+                ctsp.getMoTa(), ctsp.getSoLuong(), ctsp.getTrangThai(), ctsp.getThietKe(), ctsp.getDoiTuongSuDung(),
+                ctsp.getNsx(), ctsp.getMauSac(), ctsp.getSanPham(), ctsp.getLop());
     }
 
 //    @Override
@@ -114,22 +165,26 @@ public class BanHangServiceImpl implements BanHangService {
 
     @Override
     public boolean addGioHang(HoaDonChiTiet hdct) {
-        return true;
+        Boolean isAdd = chiTietRepository.addGioHang(hdct);
+        return isAdd;
     }
 
     @Override
     public boolean updateSoLuong(ChiTietSP chiTietSP) {
-        return true;
+        Boolean isQuantity = banHangRepository.updateQuantity(chiTietSP);
+        return isQuantity;
     }
 
     @Override
     public String deleteOrder(IdHoaDonChiTiet idHoaDonChiTiet) {
-        return null;
+        Boolean isDeleteOrder = banHangRepository.deleteOrder(idHoaDonChiTiet);
+        return isDeleteOrder ? "Thanh Cong" : "That Bai";
     }
 
     @Override
     public String thanhToan(HoaDon hoaDon) {
-        return null;
+        Boolean isThanhToan = banHangRepository.updateThanhToan(hoaDon);
+        return isThanhToan ? "Thanh Cong" : "That Bai";
     }
 
     @Override
