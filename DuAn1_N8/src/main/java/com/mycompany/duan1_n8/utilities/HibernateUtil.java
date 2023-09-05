@@ -6,18 +6,32 @@ package com.mycompany.duan1_n8.utilities;
 
 import com.mycompany.duan1_n8.entity.CheckIn;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.mycompany.duan1_n8.entity.CheckOut;
 =======
 import com.mycompany.duan1_n8.entity.ChiTietSP;
 >>>>>>> 2adbb83182d3ca23275ade5e3a034d52273f893b
+=======
+import com.mycompany.duan1_n8.entity.ChiTietSP;
+>>>>>>> 447fd4eeb12693314613b9459df820ef444a5af2
 import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.entity.DoiTuongSuDung;
+<<<<<<< HEAD
+=======
+import com.mycompany.duan1_n8.entity.HoaDon;
+import com.mycompany.duan1_n8.entity.HoaDonChiTiet;
+import com.mycompany.duan1_n8.entity.KhachHang;
+>>>>>>> 447fd4eeb12693314613b9459df820ef444a5af2
 import com.mycompany.duan1_n8.entity.Lop;
 import com.mycompany.duan1_n8.entity.MauSac;
 import com.mycompany.duan1_n8.entity.NSX;
 import com.mycompany.duan1_n8.entity.NhanVien;
+<<<<<<< HEAD
+=======
+import com.mycompany.duan1_n8.entity.PhieuGiamGia;
+>>>>>>> 447fd4eeb12693314613b9459df820ef444a5af2
 import com.mycompany.duan1_n8.entity.SanPham;
 import com.mycompany.duan1_n8.entity.ThietKe;
 import com.mycompany.duan1_n8.entity.Thu2;
@@ -66,9 +80,14 @@ public class HibernateUtil {
         conf.addAnnotatedClass(DanhSachLamViec.class);
         conf.addAnnotatedClass(CheckIn.class);
 <<<<<<< HEAD
+<<<<<<< HEAD
         conf.addAnnotatedClass(CheckOut.class);
 =======
 
+=======
+        
+         conf.addAnnotatedClass(PhieuGiamGia.class);
+>>>>>>> 447fd4eeb12693314613b9459df820ef444a5af2
         conf.addAnnotatedClass(MauSac.class);
         conf.addAnnotatedClass(NSX.class);
         conf.addAnnotatedClass(ThietKe.class);
@@ -76,7 +95,14 @@ public class HibernateUtil {
         conf.addAnnotatedClass(DoiTuongSuDung.class);
         conf.addAnnotatedClass(SanPham.class);
         conf.addAnnotatedClass(ChiTietSP.class);
+<<<<<<< HEAD
 >>>>>>> 2adbb83182d3ca23275ade5e3a034d52273f893b
+=======
+        conf.addAnnotatedClass(KhachHang.class);
+        conf.addAnnotatedClass(HoaDon.class);
+        conf.addAnnotatedClass(HoaDonChiTiet.class);
+        
+>>>>>>> 447fd4eeb12693314613b9459df820ef444a5af2
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);
