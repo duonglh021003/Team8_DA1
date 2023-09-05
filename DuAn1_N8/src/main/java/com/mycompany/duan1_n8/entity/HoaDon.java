@@ -4,10 +4,86 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
 /**
  *
  * @author BuiDucMinh
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+@Entity
+@Table(name = "HoaDon")
 public class HoaDon {
+
+    @Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idHoaDon;
+
+    @Column(name = "Ma")
+    private String maHoaDon;
+
+    @Column(name = "NgayTao")
+    private Date ngayTao;
+    
+    @Column(name = "MoTa")
+    private String moTa;
+
+    @Column(name = "TongTienHoaDon")
+    private BigDecimal tongTienHoaDon;
+    
+    @Column(name = "ThanhTien")
+    private BigDecimal thanhTien;
+    
+    @Column(name = "TienKhachDua")
+    private BigDecimal tienKhachDua;
+    
+    @Column(name = "TienThuaTraKhach")
+    private BigDecimal tienThua;
+    
+    @Column(name = "TrangThai")
+    private Integer trangThai;
+
+    @ManyToOne()
+    @JoinColumn(name = "MaQRKhachHang", referencedColumnName = "MaQR")
+    private KhachHang khachHang;
+
+    @ManyToOne()
+    @JoinColumn(name = "MaQRNhanVien", referencedColumnName = "MaQR")
+    private NhanVien nhanVien;
+
+    @ManyToOne()
+    @JoinColumn(name = "IdPhieuGiamGia", referencedColumnName = "Id")
+    private PhieuGiamGia phieuGiamGia;
+
+    public String layTrangThaiHD() {
+        if (this.trangThai == 0) {
+            return "Dang Cho Thanh Toan";
+        } else if (this.trangThai == 1) {
+            return "Da Thanh Toan";
+        } else {
+            return "Da Huy";
+        }
+    }
+    
     
 }

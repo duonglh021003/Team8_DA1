@@ -70,9 +70,8 @@ public class NhanVien {
     @Column(name = "TrangThai")
     private Integer trangThai;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "IdChucVu", referencedColumnName = "Id")
     private ChucVu chucVu;
-
   
 }
