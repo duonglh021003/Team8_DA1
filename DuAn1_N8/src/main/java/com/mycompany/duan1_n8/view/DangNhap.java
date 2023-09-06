@@ -5,6 +5,7 @@
 package com.mycompany.duan1_n8.view;
 
 import com.mycompany.duan1_n8.entity.NhanVien;
+import com.mycompany.duan1_n8.repository.LoginRepository;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
@@ -13,7 +14,11 @@ import javax.swing.JOptionPane;
  * @author BuiDucMinh
  */
 public class DangNhap extends javax.swing.JPanel {
+
+    private LoginRepository loginRepository = new LoginRepository();
+
     private final boolean isHidden = true;
+
     /**
      * Creates new form DangNhap
      */
@@ -21,19 +26,31 @@ public class DangNhap extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void dangNhap(){
+    public void dangNhap() {
         txt_tk.grabFocus();
     }
-    
-    public void addEventForgetPass(ActionListener event){
+
+    public void addEventForgetPass(ActionListener event) {
         btn_nextForgetPass.addActionListener(event);
     }
-    
-    public void btndangnhapEven(ActionListener event){
+
+    public void btndangnhapEven(ActionListener event) {
         btn_dangnhap.addActionListener(event);
     }
-    
-    
+
+    public void login() {
+        String taiKhoan = txt_tk.getText().trim();
+        String matKhau = txt_mk.getText().trim();
+
+        if (taiKhoan.isEmpty() || matKhau.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "tài khoản hoặc mật khẩu không được trống");
+        } else {
+            loginRepository.login(taiKhoan, matKhau);
+            JOptionPane.showMessageDialog(this, "đăng nhập thành công");
+        }
+
+    }
+
 //    private NhanVien getFormData() {
 ////        String User = this.txt_tk.getText().trim();
 ////        String Pass = this.txt_mk.getText().trim();
@@ -45,7 +62,6 @@ public class DangNhap extends javax.swing.JPanel {
 ////        NhanVien nv = new NhanVien(User,Pass);
 //        return nv;
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -215,6 +231,7 @@ public class DangNhap extends javax.swing.JPanel {
 
     private void btn_dangnhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dangnhapActionPerformed
         // TODO add your handling code here:
+        login();
     }//GEN-LAST:event_btn_dangnhapActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

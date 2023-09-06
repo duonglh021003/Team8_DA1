@@ -4,7 +4,6 @@
  */
 package com.mycompany.duan1_n8.repository;
 
-
 import com.mycompany.duan1_n8.entity.ChuNhat;
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.entity.NhanVien;

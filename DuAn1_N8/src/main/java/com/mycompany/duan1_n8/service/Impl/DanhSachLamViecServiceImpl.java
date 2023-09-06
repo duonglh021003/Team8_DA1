@@ -6,7 +6,6 @@ package com.mycompany.duan1_n8.service.Impl;
 
 import com.mycompany.duan1_n8.entity.DanhSachLamViec;
 import com.mycompany.duan1_n8.repository.DanhSachLamViecRepository;
-import com.mycompany.duan1_n8.repository.NhanVienRepository;
 import com.mycompany.duan1_n8.service.DanhSachLamViecService;
 import java.util.List;
 

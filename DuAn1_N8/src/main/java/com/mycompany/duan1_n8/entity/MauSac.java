@@ -4,6 +4,7 @@
  */
 package com.mycompany.duan1_n8.entity;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,4 +42,10 @@ public class MauSac {
 
     @Column(name = "Ten")
     private String tenMauSac;
+
+    @Column(name = "NgayTao")
+    private Date ngayTao;
+
+    @Column(name = "NgaySua")
+    private Date ngaySua;
 }

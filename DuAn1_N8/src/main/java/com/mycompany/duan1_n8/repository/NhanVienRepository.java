@@ -28,6 +28,18 @@ public class NhanVienRepository {
         return list;
     }
 
+    public NhanVien getOne(String maNV) {
+        NhanVien nhanVien = null;
+        try ( Session session = HibernateUtil.getFACTORY().openSession()) {
+            Query query = session.createQuery("FROM NhanVien WHERE Ma= :maNV");
+            query.setParameter("maNV", maNV);
+            nhanVien = (NhanVien) query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return nhanVien;
+    }
+
     public Boolean add(NhanVien nv) {
         Transaction transaction = null;
         Integer check = 0;
@@ -65,12 +77,12 @@ public class NhanVienRepository {
             session.saveOrUpdate(nhanVien);
             transaction.commit();
             check = true;
-             
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             transaction.rollback();
         }
         return check;
     }
-
+    
 }
