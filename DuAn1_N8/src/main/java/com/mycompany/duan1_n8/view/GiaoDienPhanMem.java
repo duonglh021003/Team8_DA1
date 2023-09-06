@@ -4,7 +4,11 @@
  */
 package com.mycompany.duan1_n8.view;
 
+import com.mycompany.duan1_n8.entity.Login;
+import com.mycompany.duan1_n8.entity.NhanVien;
+import com.mycompany.duan1_n8.repository.LoginRepository;
 import java.awt.Color;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,6 +19,8 @@ import javax.swing.JPanel;
  */
 public class GiaoDienPhanMem extends javax.swing.JFrame {
 
+    private LoginRepository loginRepository = new LoginRepository();
+    private DangNhap dangNhap = new DangNhap();
     /**
      * Creates new form GiaoDienPhanMem
      */
@@ -28,6 +34,10 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         setColor(btn_banhang);
         resetColor(new JPanel[]{btn_sanpham, btn_hoadon, btn_khuyenmai, btn_nhanvien, btn_khachhang, btn_thongke, btn_dangxuat});
         setpanal(new FormBanHang());
+        
+        for(Login login : loginRepository.list){
+            System.out.println("cccccccc        "+login);
+        }
 
     }
 
@@ -58,7 +68,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        txt_tenNV01 = new javax.swing.JLabel();
         btn_sanpham = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         btn_banhang = new javax.swing.JPanel();
@@ -75,6 +85,9 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         btn_dangxuat = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txt_maNV01 = new javax.swing.JLabel();
         formPhanMem = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -85,8 +98,7 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(153, 255, 204));
         jPanel1.setForeground(new java.awt.Color(0, 153, 153));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Tên nhân viên");
+        txt_tenNV01.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btn_sanpham.setBackground(new java.awt.Color(153, 255, 204));
         btn_sanpham.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -316,6 +328,12 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
+        jLabel2.setText("tên nhân viên");
+
+        jLabel11.setText("mã nhân viên");
+
+        txt_maNV01.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -329,16 +347,26 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
             .addComponent(btn_thongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btn_dangxuat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
+                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_tenNV01, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_maNV01, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addGap(14, 14, 14)
+                .addComponent(txt_maNV01, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(txt_tenNV01, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(btn_banhang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_sanpham, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -501,8 +529,9 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
     private javax.swing.JPanel btn_sanpham;
     private javax.swing.JPanel btn_thongke;
     private javax.swing.JPanel formPhanMem;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -512,6 +541,8 @@ public class GiaoDienPhanMem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel txt_maNV01;
+    private javax.swing.JLabel txt_tenNV01;
     // End of variables declaration//GEN-END:variables
 
 }
