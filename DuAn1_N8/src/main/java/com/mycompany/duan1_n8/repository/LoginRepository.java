@@ -4,10 +4,10 @@
  */
 package com.mycompany.duan1_n8.repository;
 
-import com.mycompany.duan1_n8.entity.Login;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,34 +15,19 @@ import javax.swing.JOptionPane;
  * @author BXT
  */
 public class LoginRepository {
-    
-    public List<Login> list = new ArrayList<>();
-   
-    
+
+    public List<String> list = new ArrayList<>();
+
     private NhanVienRepository nhanVienRepository = new NhanVienRepository();
 
-    
-    public Login login(String taiKhoan, String matKhau){
+    public List<String> login(String taiKhoan, String matKhau) {
        
-        for(NhanVien nhanVien : nhanVienRepository.getAll()){
-            if(nhanVien.getSdt().equalsIgnoreCase(taiKhoan) && nhanVien.getMatKhau().equalsIgnoreCase(matKhau)){
-                System.out.println("aaaaaaaa    ");
-                Login login = new Login();
-                login.setTaiKhoan(taiKhoan);
-                login.setMatKhau(matKhau);
+        for (NhanVien nhanVien : nhanVienRepository.getAll()) {
+            if (nhanVien.getSdt().equalsIgnoreCase(taiKhoan) && nhanVien.getMatKhau().equalsIgnoreCase(matKhau)) {
+                list.add(String.valueOf(nhanVien));
             }
         }
-        System.out.println("ccccccccccc     "+list);
-        return login(taiKhoan, matKhau);
-    }
-    public void output(){
-        System.out.println(toString());
+        return list;
     }
 
-
-    
-    
-    
-    
-    
 }
