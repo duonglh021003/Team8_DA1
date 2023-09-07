@@ -1617,7 +1617,7 @@ public class FormBanHang extends javax.swing.JPanel {
 
     private void txt_searchTenSpCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_searchTenSpCaretUpdate
         // TODO add your handling code here:
-        
+        searchTenSP();
     }//GEN-LAST:event_txt_searchTenSpCaretUpdate
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
