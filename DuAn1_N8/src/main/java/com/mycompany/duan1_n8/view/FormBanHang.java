@@ -4,6 +4,16 @@
  */
 package com.mycompany.duan1_n8.view;
 
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.mycompany.duan1_n8.entity.ChiTietSP;
 import com.mycompany.duan1_n8.entity.ChucVu;
 import com.mycompany.duan1_n8.entity.DoiTuongSuDung;
@@ -41,7 +51,9 @@ import com.mycompany.duan1_n8.service.PhieuGiamGiaService;
 import com.mycompany.duan1_n8.service.SanPhamService;
 import com.mycompany.duan1_n8.service.ThietKeService;
 import com.mycompany.duan1_n8.service.BanHangService;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -54,6 +66,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -104,6 +117,14 @@ public class FormBanHang extends javax.swing.JPanel {
     private float index2 = 0;
     private int indexDelete = 0;
 
+    private DefaultTableModel model;
+    private DefaultComboBoxModel defaultComboBoxModel;
+    private Webcam webcam;
+    private WebcamPanel webcamPanel;
+    private Thread captureThread;
+    private boolean isCameraClosed = false;
+    private JFrame frame;
+
     public FormBanHang() {
 
         initComponents();
@@ -150,8 +171,6 @@ public class FormBanHang extends javax.swing.JPanel {
     }
 
     // load Nhan Vien
-    
-
     // loadData San Pham
     private void loadDataSP(List<ChiTietSP> listCTSP1) {
         tableModel = (DefaultTableModel) tbl_bangSanPham.getModel();
@@ -191,32 +210,53 @@ public class FormBanHang extends javax.swing.JPanel {
 
     }
 
+    private void loadDataHD001() {
+        
+        List<HoaDon> listHoaDon1 = banHangService.getAllHD();
+        tableModel = (DefaultTableModel) tbl_hoadon.getModel();
+        tableModel.setRowCount(0);
+
+        for (HoaDon hd : listHoaDon1) {
+            tableModel.addRow(new Object[]{
+                hd.getIdHoaDon(),
+                hd.getMaHoaDon(),
+                sdf.format(hd.getNgayTao()),
+                hd.getKhachHang().getTenKH(),
+                hd.getNhanVien().getTen(),
+                hd.layTrangThaiHD()
+
+            });
+        }
+
+    }
 // show Hoa Don
     private void showHoaDon() {
         indexHoaDon = tbl_hoadon.getSelectedRow();
         txt_maHoaDon1.setText(tbl_hoadon.getValueAt(indexHoaDon, 1).toString());
+        
     }
 
     // Tao Hoa Don
     private void taoHoaDon() {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setNgayTao(dateNow);
+
         String maNhanVien = "";
         Integer idMaNV = Integer.valueOf(txt_maNV.getText().trim());
-        for(NhanVien nv : nhanVienService.getAll()){
-            if(nv.getMaQr().equals(idMaNV)){
+        for (NhanVien nv : nhanVienService.getAll()) {
+            if (nv.getMaQr().equals(idMaNV)) {
                 maNhanVien = nv.getMa();
             }
         }
-        
+
         String maKhachHang = "";
         Integer idMaKH = Integer.valueOf(txt_maKH.getText().trim());
-        for(NhanVien nv : nhanVienService.getAll()){
-            if(nv.getMaQr().equals(idMaNV)){
-                maKhachHang = nv.getMa();
+        for (KhachHang kh : khachHangService.getAllKH()) {
+            if (kh.getMaQR().equals(idMaKH)) {
+                maKhachHang = kh.getMaKH();
             }
         }
-        
+
         if (banHangService.addHoaDon(hoaDon, maNhanVien, maKhachHang)) {
             JOptionPane.showMessageDialog(this, "Tao Hoa Don Thanh Cong");
         }
@@ -473,11 +513,11 @@ public class FormBanHang extends javax.swing.JPanel {
         int soLuongConLai = 0;
 
         for (ChiTietSP ctsp01 : chiTietSPService.getAllCTSP()) {
-            System.out.println("ddddddd     "+ctsp01.getMaQr());
-            System.out.println("vvvvvvvvvv      "+idCTSP);
+            System.out.println("ddddddd     " + ctsp01.getMaQr());
+            System.out.println("vvvvvvvvvv      " + idCTSP);
             if (ctsp01.getMaQr().equals(idCTSP)) {
-                System.out.println("mmmmmmmm        "+ctsp01.getSoLuong());
-                System.out.println("aaaaaaaa    "   +soLuongConLai);
+                System.out.println("mmmmmmmm        " + ctsp01.getSoLuong());
+                System.out.println("aaaaaaaa    " + soLuongConLai);
                 soLuongConLai = ctsp01.getSoLuong() + soLuongGioHang;
                 ChiTietSP updateQuantity = ChiTietSP.builder()
                         .maQr(idCTSP)
@@ -536,8 +576,6 @@ public class FormBanHang extends javax.swing.JPanel {
                 .hoaDon(addHoaDon)
                 .chiTietSP(ctsp)
                 .build();
-
-        
 
         HoaDonChiTiet hdct = HoaDonChiTiet.builder().idHoaDonChiTiet(addIdHDCT).build();
         hoaDonChiTietRepository.deleteAll(hdct);
@@ -623,7 +661,7 @@ public class FormBanHang extends javax.swing.JPanel {
         int rowHD = this.tbl_hoadon.getSelectedRow();
         rowHD = 0;
         Long hoaDon = Long.valueOf(this.tbl_hoadon.getValueAt(rowHD, 0).toString());
-        
+
         tableModel = (DefaultTableModel) this.tbl_gioHang.getModel();
         tableModel.setRowCount(0);
         for (HoaDonChiTiet hdct : hoaDonChiTietRepository.getAll()) {
@@ -712,21 +750,154 @@ public class FormBanHang extends javax.swing.JPanel {
                 .idHoaDon(idHoaDon1)
                 .build();
         banHangService.huyHoaDon(addHoaDon);
+        
         JOptionPane.showMessageDialog(this, "Huy Hoa Don Thanh Cong");
 
+        
     }
-    
-    private void searchTenKH(){
-        
+
+    private void searchTenKH() {
+
         Integer idKH = Integer.valueOf(txt_maKH.getText());
-        
-        for(KhachHang kh : khachHangService.getAllKH()){
-            System.out.println("aaaaaaaaaa      "+idKH);
-            System.out.println("bbbbbbbbbb      "+kh.getMaQR());
-            if(kh.getMaQR().equals(idKH)){
-                System.out.println("ccccccccccc     "+kh);
+
+        for (KhachHang kh : khachHangService.getAllKH()) {
+            System.out.println("aaaaaaaaaa      " + idKH);
+            System.out.println("bbbbbbbbbb      " + kh.getMaQR());
+            if (kh.getMaQR().equals(idKH)) {
+                System.out.println("ccccccccccc     " + kh);
                 txt_tenKH.setText(kh.getTenKH());
             }
+        }
+    }
+
+    public void initWebcam() {
+
+        frame = new JFrame();
+        frame.setBounds(100, 100, 400, 300); // Đặt kích thước cửa sổ JFrame
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        webcam = Webcam.getWebcams().get(0);
+        Dimension size = WebcamResolution.VGA.getSize();
+        webcam.setViewSize(size);
+        webcamPanel = new WebcamPanel(webcam);
+        webcamPanel.setPreferredSize(size);
+        webcamPanel.setFPSDisplayed(true);
+
+        frame.getContentPane().add(webcamPanel);
+        frame.setVisible(true);
+    }
+
+    public void captureThreadMaNV() {
+
+        captureThread = new Thread() {
+            @Override
+
+            public void run() {
+
+                do {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+
+                        ex.printStackTrace();
+                    }
+                    Result result = null;
+                    BufferedImage image = null;
+                    if (webcam.open()) {
+                        if ((image = webcam.getImage()) == null) {
+                            continue;
+                        }
+                    }
+                    LuminanceSource source = new BufferedImageLuminanceSource(image);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                    try {
+                        result = new MultiFormatReader().decode(bitmap);
+                    } catch (NotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (result != null) {
+                        txt_maNV.setText(result.getText());
+                    }
+                } while (true);
+            }
+        };
+        captureThread.setDaemon(true);
+        captureThread.start();
+
+    }
+
+    public void captureThreadMaKH() {
+
+        captureThread = new Thread() {
+            @Override
+
+            public void run() {
+                int count = 0;
+                do {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+
+                        ex.printStackTrace();
+                    }
+                    Result result = null;
+                    BufferedImage image = null;
+                    if (webcam.open()) {
+                        if ((image = webcam.getImage()) == null) {
+                            continue;
+                        }
+                    }
+                    LuminanceSource source = new BufferedImageLuminanceSource(image);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                    try {
+                        result = new MultiFormatReader().decode(bitmap);
+                    } catch (NotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (result != null) {
+                        txt_maKH.setText(result.getText());
+                    }
+
+                } while (true);
+            }
+        };
+        captureThread.setDaemon(true);
+        captureThread.start();
+    }
+
+    public void stopCapture() {
+        isCameraClosed = true;
+        if (webcam != null && webcam.isOpen()) {
+            webcam.close();
+            frame.setVisible(false);
+        }
+    }
+
+    private void searchTenSP() {
+        List<ChiTietSP> list = chiTietSPService.getAllCTSP();
+
+        String tenSP = txt_searchTenSp.getText();
+        
+        model = (DefaultTableModel) tbl_bangSanPham.getModel();
+        model.setRowCount(0);
+
+        for (ChiTietSP chiTietSP : list) {
+            if (chiTietSP.getSanPham().getTen().equalsIgnoreCase(tenSP)) {
+                model.addRow(new Object[]{
+                    chiTietSP.getMaQr(),
+                    chiTietSP.getSanPham().getTen(),
+                    decimalFormat.format(chiTietSP.getGia()),
+                    chiTietSP.getSoLuong(),
+                    chiTietSP.getMauSac().getTenMauSac(),
+                    chiTietSP.getNsx().getTen(),
+                    chiTietSP.getThietKe().getTen(),
+                    chiTietSP.layTrangThai()
+                });
+            }
+        }
+        
+        if(tenSP.isEmpty()){
+            loadDataSP(listCTSP);
         }
     }
 
@@ -753,9 +924,7 @@ public class FormBanHang extends javax.swing.JPanel {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbl_bangSanPham = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        txt_tenSP = new javax.swing.JTextField();
-        cb_mau = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
+        txt_searchTenSp = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -815,7 +984,7 @@ public class FormBanHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Id", "Mã Hoá Đơn", "Ngày Tạo", "Mã Khách Hàng", "Mã Nhân Viên", "Tình Trạng"
+                "Id", "Mã Hoá Đơn", "Ngày Tạo", "tên Khách Hàng", "tên Nhân Viên", "Tình Trạng"
             }
         ));
         tbl_hoadon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -933,32 +1102,27 @@ public class FormBanHang extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Tìm kiếm sản phẩm:");
 
-        txt_tenSP.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txt_tenSPFocusGained(evt);
+        txt_searchTenSp.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txt_searchTenSpCaretUpdate(evt);
             }
         });
-        txt_tenSP.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_searchTenSp.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_searchTenSpFocusGained(evt);
+            }
+        });
+        txt_searchTenSp.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_tenSPKeyPressed(evt);
+                txt_searchTenSpKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_tenSPKeyReleased(evt);
+                txt_searchTenSpKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_tenSPKeyTyped(evt);
+                txt_searchTenSpKeyTyped(evt);
             }
         });
-
-        cb_mau.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All" }));
-        cb_mau.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cb_mauActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("Lọc màu sắc:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -971,26 +1135,16 @@ public class FormBanHang extends javax.swing.JPanel {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(txt_tenSP, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(cb_mau, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)))
+                            .addComponent(txt_searchTenSp, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(127, 471, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_tenSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cb_mau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_searchTenSp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -1328,34 +1482,30 @@ public class FormBanHang extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cb_mauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_mauActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_mauActionPerformed
-
     private void btn_ThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ThanhToanActionPerformed
         // TODO add your handling code here:
         thanhToan();
     }//GEN-LAST:event_btn_ThanhToanActionPerformed
 
-    private void txt_tenSPFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_tenSPFocusGained
+    private void txt_searchTenSpFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_searchTenSpFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_tenSPFocusGained
+    }//GEN-LAST:event_txt_searchTenSpFocusGained
 
     private void tbl_bangSanPhamFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbl_bangSanPhamFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_tbl_bangSanPhamFocusGained
 
-    private void txt_tenSPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tenSPKeyPressed
+    private void txt_searchTenSpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchTenSpKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_tenSPKeyPressed
+    }//GEN-LAST:event_txt_searchTenSpKeyPressed
 
-    private void txt_tenSPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tenSPKeyReleased
+    private void txt_searchTenSpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchTenSpKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_tenSPKeyReleased
+    }//GEN-LAST:event_txt_searchTenSpKeyReleased
 
-    private void txt_tenSPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_tenSPKeyTyped
+    private void txt_searchTenSpKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchTenSpKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_tenSPKeyTyped
+    }//GEN-LAST:event_txt_searchTenSpKeyTyped
 
     private void tbl_bangSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_bangSanPhamMouseClicked
         // TODO add your handling code here:
@@ -1406,7 +1556,7 @@ public class FormBanHang extends javax.swing.JPanel {
     private void btn_huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyActionPerformed
         // TODO add your handling code here:
         huyHoaDon();
-        loadDataHD(listHoaDon);
+        loadDataHD001();
     }//GEN-LAST:event_btn_huyActionPerformed
 
     private void btn_lamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lamMoiActionPerformed
@@ -1449,17 +1599,26 @@ public class FormBanHang extends javax.swing.JPanel {
 
     private void btn_quetQRNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quetQRNVActionPerformed
         // TODO add your handling code here:
+        initWebcam();
+        captureThreadMaNV();
     }//GEN-LAST:event_btn_quetQRNVActionPerformed
 
     private void btn_quetQRKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quetQRKHActionPerformed
         // TODO add your handling code here:
-       
+        initWebcam();
+        captureThreadMaKH();
     }//GEN-LAST:event_btn_quetQRKHActionPerformed
 
     private void btn_quetQRKH1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quetQRKH1ActionPerformed
         // TODO add your handling code here:
-         searchTenKH();
+        stopCapture();
+        searchTenKH();
     }//GEN-LAST:event_btn_quetQRKH1ActionPerformed
+
+    private void txt_searchTenSpCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_searchTenSpCaretUpdate
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txt_searchTenSpCaretUpdate
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_ThanhToan;
@@ -1472,7 +1631,6 @@ public class FormBanHang extends javax.swing.JPanel {
     private javax.swing.JButton btn_quetQRNV;
     private javax.swing.JButton btn_taoHoaDon;
     private javax.swing.JComboBox<String> cbGiamGia;
-    private javax.swing.JComboBox<String> cb_mau;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1485,7 +1643,6 @@ public class FormBanHang extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1511,8 +1668,8 @@ public class FormBanHang extends javax.swing.JPanel {
     private javax.swing.JTextField txt_maKH;
     private javax.swing.JTextField txt_maNV;
     private javax.swing.JTextArea txt_mota;
+    private javax.swing.JTextField txt_searchTenSp;
     private javax.swing.JTextField txt_tenKH;
-    private javax.swing.JTextField txt_tenSP;
     private javax.swing.JTextField txt_tienKhachDua;
     // End of variables declaration//GEN-END:variables
 }

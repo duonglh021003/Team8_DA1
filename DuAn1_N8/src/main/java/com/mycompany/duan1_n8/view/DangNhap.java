@@ -7,6 +7,8 @@ package com.mycompany.duan1_n8.view;
 import com.mycompany.duan1_n8.entity.NhanVien;
 import com.mycompany.duan1_n8.repository.LoginRepository;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,6 +44,7 @@ public class DangNhap extends javax.swing.JPanel {
         String taiKhoan = txt_tk.getText().trim();
         String matKhau = txt_mk.getText().trim();
 
+        
         if (taiKhoan.isEmpty() || matKhau.isEmpty()) {
             JOptionPane.showMessageDialog(this, "tài khoản hoặc mật khẩu không được trống");
         } else {
@@ -50,6 +53,9 @@ public class DangNhap extends javax.swing.JPanel {
         }
 
     }
+   
+    
+    
 
 //    private NhanVien getFormData() {
 ////        String User = this.txt_tk.getText().trim();
@@ -232,6 +238,7 @@ public class DangNhap extends javax.swing.JPanel {
     private void btn_dangnhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dangnhapActionPerformed
         // TODO add your handling code here:
         login();
+        
     }//GEN-LAST:event_btn_dangnhapActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
